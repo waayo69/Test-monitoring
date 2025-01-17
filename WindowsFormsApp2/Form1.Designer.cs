@@ -33,13 +33,15 @@
             this.btnGetSelection = new System.Windows.Forms.Button();
             this.lblSelectedValue = new System.Windows.Forms.Label();
             this.lblRemove = new System.Windows.Forms.Button();
+            this.radioButtonSelectAll = new System.Windows.Forms.RadioButton();
+            this.radioButtonDeselect = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // checkedListBox1
             // 
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(36, 216);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.checkedListBox1.Location = new System.Drawing.Point(13, 367);
+            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(423, 174);
             this.checkedListBox1.TabIndex = 0;
@@ -76,8 +78,8 @@
             "Senior Citizen ID",
             "Solo Parent ID",
             "SSS ID"});
-            this.comboBoxItems.Location = new System.Drawing.Point(36, 142);
-            this.comboBoxItems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxItems.Location = new System.Drawing.Point(13, 267);
+            this.comboBoxItems.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxItems.Name = "comboBoxItems";
             this.comboBoxItems.Size = new System.Drawing.Size(423, 24);
             this.comboBoxItems.Sorted = true;
@@ -85,8 +87,8 @@
             // 
             // btnGetSelection
             // 
-            this.btnGetSelection.Location = new System.Drawing.Point(493, 142);
-            this.btnGetSelection.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnGetSelection.Location = new System.Drawing.Point(470, 267);
+            this.btnGetSelection.Margin = new System.Windows.Forms.Padding(4);
             this.btnGetSelection.Name = "btnGetSelection";
             this.btnGetSelection.Size = new System.Drawing.Size(100, 28);
             this.btnGetSelection.TabIndex = 2;
@@ -106,7 +108,7 @@
             // 
             // lblRemove
             // 
-            this.lblRemove.Location = new System.Drawing.Point(493, 216);
+            this.lblRemove.Location = new System.Drawing.Point(470, 367);
             this.lblRemove.Name = "lblRemove";
             this.lblRemove.Size = new System.Drawing.Size(100, 36);
             this.lblRemove.TabIndex = 4;
@@ -114,20 +116,46 @@
             this.lblRemove.UseVisualStyleBackColor = true;
             this.lblRemove.Click += new System.EventHandler(this.lblRemove_Click);
             // 
+            // radioButtonSelectAll
+            // 
+            this.radioButtonSelectAll.AutoSize = true;
+            this.radioButtonSelectAll.Location = new System.Drawing.Point(13, 340);
+            this.radioButtonSelectAll.Name = "radioButtonSelectAll";
+            this.radioButtonSelectAll.Size = new System.Drawing.Size(83, 20);
+            this.radioButtonSelectAll.TabIndex = 5;
+            this.radioButtonSelectAll.TabStop = true;
+            this.radioButtonSelectAll.Text = "Select all";
+            this.radioButtonSelectAll.UseVisualStyleBackColor = true;
+            this.radioButtonSelectAll.CheckedChanged += new System.EventHandler(this.radioButtonSelectAll_CheckedChanged);
+            // 
+            // radioButtonDeselect
+            // 
+            this.radioButtonDeselect.AutoSize = true;
+            this.radioButtonDeselect.Location = new System.Drawing.Point(116, 340);
+            this.radioButtonDeselect.Name = "radioButtonDeselect";
+            this.radioButtonDeselect.Size = new System.Drawing.Size(99, 20);
+            this.radioButtonDeselect.TabIndex = 6;
+            this.radioButtonDeselect.TabStop = true;
+            this.radioButtonDeselect.Text = "Deselect all";
+            this.radioButtonDeselect.UseVisualStyleBackColor = true;
+            this.radioButtonDeselect.CheckedChanged += new System.EventHandler(this.radioButtonDeselect_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 554);
+            this.Controls.Add(this.radioButtonDeselect);
+            this.Controls.Add(this.radioButtonSelectAll);
             this.Controls.Add(this.lblRemove);
             this.Controls.Add(this.lblSelectedValue);
             this.Controls.Add(this.btnGetSelection);
             this.Controls.Add(this.comboBoxItems);
             this.Controls.Add(this.checkedListBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Planning";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,6 +168,8 @@
         private System.Windows.Forms.Button btnGetSelection;
         private System.Windows.Forms.Label lblSelectedValue;
         private System.Windows.Forms.Button lblRemove;
+        private System.Windows.Forms.RadioButton radioButtonSelectAll;
+        private System.Windows.Forms.RadioButton radioButtonDeselect;
     }
 }
 

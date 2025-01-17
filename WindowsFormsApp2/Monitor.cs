@@ -159,6 +159,7 @@ namespace WindowsFormsApp2
                 MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private STM stmForm; // Class-level reference to the STM form
         private void btnSend_Click(object sender, EventArgs e)
         {
             try
@@ -177,11 +178,23 @@ namespace WindowsFormsApp2
                     string requirementsStatus = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
                     string paymentStatus = selectedRow.Cells["PaymentStatusDataGridViewTextBoxColumn"].Value.ToString();
 
-                    // Pass data to the STM form via constructor
-                    STM stmForm = new STM(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
+                    // Check if the STM form is already running
+                    if (stmForm != null && !stmForm.IsDisposed)
+                    {
+                        // Add new data to the existing table layout panel in the form
+                        stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
+                    }
+                    else
+                    {
+                        // Create a new instance of the STM form
+                        stmForm = new STM();
 
-                    // Show the STM form
-                    stmForm.Show();
+                        // Add the first set of data to the table layout panel
+                        stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
+
+                        // Show the STM form
+                        stmForm.Show();
+                    }
                 }
                 else
                 {

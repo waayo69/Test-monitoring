@@ -141,6 +141,7 @@
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.DataGridView1);
             this.Name = "Monitor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Monitor";
             this.Load += new System.EventHandler(this.Monitor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
