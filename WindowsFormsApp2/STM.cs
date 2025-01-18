@@ -28,7 +28,7 @@ namespace WindowsFormsApp2
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
         }
 
-        public void AddRowToTable(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus)
+        public void AddRowToTable(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
         {
             // Define row index
             int rowIndex = tableLayoutPanel1.RowCount;
@@ -40,12 +40,32 @@ namespace WindowsFormsApp2
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             // Add controls (e.g., Labels) for each data point
-            tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = ID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
+            //tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
             tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
             tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
             tableLayoutPanel1.Controls.Add(new Label { Text = queuePosition.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = requirementsStatus, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 4, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = paymentStatus, AutoSize = true,TextAlign=ContentAlignment.MiddleCenter,Dock=DockStyle.Fill }, 5, rowIndex);
+            Label requirementsLabel = new Label
+            {
+                Text = requirementsStatus,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                BackColor = requirementsStatus == "PQRF" ? Color.Orange : requirementsStatus == "MPORF" ? Color.Pink : Color.Transparent
+                
+            };
+            
+            tableLayoutPanel1.Controls.Add(requirementsLabel, 4, rowIndex);
+            Label paymentLabel = new Label
+            {
+                Text = paymentStatus,
+                TextAlign = ContentAlignment.MiddleCenter,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                BackColor = paymentStatus == "Paid" ? Color.Green : paymentStatus == "Unpaid" ? Color.IndianRed : Color.Transparent
+
+            };
+            tableLayoutPanel1.Controls.Add(paymentLabel , 5, rowIndex);
             tableLayoutPanel1.Controls.Add(new ProgressBar { Value = 30, Maximum = 100, Dock = DockStyle.Fill, AutoSize = true,Style=ProgressBarStyle.Continuous }, 6, rowIndex);
         }
 

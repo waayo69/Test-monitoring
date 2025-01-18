@@ -65,25 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dbqueueDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbqueueDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="dbqueueDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dbqueueDataSet1.xsd</DependentUpon>
-    </Compile>
     <Compile Include="dbqueueDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>dbqueueDataSet2.xsd</DependentUpon>
     </Compile>
-    <Compile Include="dbqueueKani.Designer.cs">
+    <Compile Include="dbqueueDataSet3.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>dbqueueKani.xsd</DependentUpon>
+      <DependentUpon>dbqueueDataSet3.xsd</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -123,28 +113,6 @@
     <EmbeddedResource Include="STM.resx">
       <DependentUpon>STM.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="dbqueueDataSet.xsc">
-      <DependentUpon>dbqueueDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="dbqueueDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dbqueueDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="dbqueueDataSet.xss">
-      <DependentUpon>dbqueueDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="dbqueueDataSet1.xsc">
-      <DependentUpon>dbqueueDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="dbqueueDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dbqueueDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="dbqueueDataSet1.xss">
-      <DependentUpon>dbqueueDataSet1.xsd</DependentUpon>
-    </None>
     <None Include="dbqueueDataSet2.xsc">
       <DependentUpon>dbqueueDataSet2.xsd</DependentUpon>
     </None>
@@ -156,16 +124,16 @@
     <None Include="dbqueueDataSet2.xss">
       <DependentUpon>dbqueueDataSet2.xsd</DependentUpon>
     </None>
-    <None Include="dbqueueKani.xsc">
-      <DependentUpon>dbqueueKani.xsd</DependentUpon>
+    <None Include="dbqueueDataSet3.xsc">
+      <DependentUpon>dbqueueDataSet3.xsd</DependentUpon>
     </None>
-    <None Include="dbqueueKani.xsd">
+    <None Include="dbqueueDataSet3.xsd">
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dbqueueKani.Designer.cs</LastGenOutput>
+      <LastGenOutput>dbqueueDataSet3.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="dbqueueKani.xss">
-      <DependentUpon>dbqueueKani.xsd</DependentUpon>
+    <None Include="dbqueueDataSet3.xss">
+      <DependentUpon>dbqueueDataSet3.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
