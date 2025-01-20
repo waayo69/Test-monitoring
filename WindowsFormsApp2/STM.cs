@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WindowsFormsApp2
 {
@@ -26,6 +27,11 @@ namespace WindowsFormsApp2
             //lblPaymentStatus.Text = paymentStatus;
 
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
+        }
+
+        public void QueHere(string clientName,string Date,string Status,string paymentStatus,int ID)
+        {
+
         }
 
         public void AddRowToTable(string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
@@ -66,7 +72,7 @@ namespace WindowsFormsApp2
 
             };
             tableLayoutPanel1.Controls.Add(paymentLabel , 5, rowIndex);
-            tableLayoutPanel1.Controls.Add(new ProgressBar { Value = 30, Maximum = 100, Dock = DockStyle.Fill, AutoSize = true,Style=ProgressBarStyle.Continuous }, 6, rowIndex);
+            //tableLayoutPanel1.Controls.Add(new ProgressBar { Value = 30, Maximum = 100, Dock = DockStyle.Fill, AutoSize = true,Style=ProgressBarStyle.Continuous }, 6, rowIndex);
         }
 
         //public void UpdateLabels(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus)

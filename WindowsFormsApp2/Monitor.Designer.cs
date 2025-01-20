@@ -42,6 +42,8 @@
             this.btnSend = new System.Windows.Forms.Button();
             this.clientsTableAdapter1 = new WindowsFormsApp2.dbqueueDataSet3TableAdapters.ClientsTableAdapter();
             this.button1 = new System.Windows.Forms.Button();
+            this.TM = new System.Windows.Forms.Timer(this.components);
+            this.lblTimer = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).BeginInit();
@@ -71,7 +73,6 @@
             this.DataGridView1.RowTemplate.Height = 24;
             this.DataGridView1.Size = new System.Drawing.Size(924, 269);
             this.DataGridView1.TabIndex = 0;
-            this.DataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // IDDataGridViewTextBoxColumn
             // 
@@ -158,11 +159,28 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // TM
+            // 
+            this.TM.Enabled = true;
+            this.TM.Interval = 1000;
+            this.TM.Tick += new System.EventHandler(this.TM_Tick);
+            // 
+            // lblTimer
+            // 
+            this.lblTimer.AutoSize = true;
+            this.lblTimer.Location = new System.Drawing.Point(415, 372);
+            this.lblTimer.Name = "lblTimer";
+            this.lblTimer.Size = new System.Drawing.Size(44, 16);
+            this.lblTimer.TabIndex = 3;
+            this.lblTimer.Text = "label1";
+            this.lblTimer.Click += new System.EventHandler(this.lblTimer_Click);
+            // 
             // Monitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1013, 450);
+            this.Controls.Add(this.lblTimer);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.DataGridView1);
@@ -174,6 +192,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -192,5 +211,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn requirementsStatusDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn paymentStatusDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Timer TM;
+        private System.Windows.Forms.Label lblTimer;
     }
 }

@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace WindowsFormsApp2
 {
@@ -20,7 +23,9 @@ namespace WindowsFormsApp2
         private static readonly string SpreadsheetId = "1dCshOpmc9WO-WQR6XV264NgWiOkJR42ZSRYoBocj7sw"; // Replace with your Google Sheets ID
         private static readonly string SheetName = "Clients"; // Sheet name should match your database table
         private STM stmForm; // Class-level reference to the STM form
-
+        System.Windows.Forms.Timer timer2 = new System.Windows.Forms.Timer();
+        private bool isMinimized = false;
+        private int seconds = 0;
         public Monitor()
         {
             InitializeComponent();
@@ -73,10 +78,7 @@ namespace WindowsFormsApp2
                 stmForm.Show();
             }
         }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
 
-        }
         private void FetchAndSyncGoogleSheetsData()
         {
             try
@@ -126,6 +128,53 @@ namespace WindowsFormsApp2
             catch (Exception ex)
             {
                 MessageBox.Show($"Error fetching Google Sheets data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void updateQue(IList<object> row)
+        {
+            try
+            {
+                // Establish a connection to the SQL Server database
+                using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
+                {
+                    connection.Open();
+
+                    // Check if the record exists
+                    var query = "SELECT COUNT(*) FROM Que WHERE ID=@ID";
+                    using (var checkCmd = new SqlCommand(query, connection))
+                    {
+                        checkCmd.Parameters.AddWithValue("ID", row[6]); // Assuming ID is in column A
+                        int count = (int)checkCmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            // Skip the existing record
+                            return;
+                        }
+                        else
+                        {
+                            // Insert new record
+                            query = @"
+                        INSERT INTO Que (ID, ClientName, Date, Service, PaymentStatus, ID1)
+                        VALUES (@ID, @ClientName, @Date, @Service, @PaymentStatus, @ID1)";
+
+                            using (var insertCmd = new SqlCommand(query, connection))
+                            {
+                                insertCmd.Parameters.AddWithValue("@ID", row[0]); // Assuming ID is in column A
+                                insertCmd.Parameters.AddWithValue("@ClientName", row[1]);
+                                insertCmd.Parameters.AddWithValue("@Date", (row[2]));
+                                insertCmd.Parameters.AddWithValue("@Service", row[3]);
+                                insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
+                                insertCmd.Parameters.AddWithValue("@ID1", row[6]);
+                                insertCmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -198,7 +247,23 @@ namespace WindowsFormsApp2
                     // Add the selected row's data to the STM form
                     if (stmForm != null && !stmForm.IsDisposed)
                     {
-                        stmForm.AddRowToTable( clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                        stmForm.WindowState = FormWindowState.Minimized;
+                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+                        {
+                            Interval = 10 // 1 second delay
+
+                        };
+
+                        // Transfer data after restoring STM
+                        stmForm.AddRowToTable(clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                        timer.Tick += (s, args) =>
+                        {
+                            timer.Stop();
+                            stmForm.WindowState = FormWindowState.Maximized;
+
+                        };
+
+                        timer.Start();
                     }
                     else
                     {
@@ -223,6 +288,7 @@ namespace WindowsFormsApp2
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa
 
             //try
             //{
@@ -233,31 +299,24 @@ namespace WindowsFormsApp2
             //        DataGridViewRow selectedRow = DataGridView1.SelectedRows[0];
 
             //        // Retrieve data from the selected row
-            //        string ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
-            //        int clientID = Convert.ToInt32(selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
+
+            //        //int ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
+            //        int ID= Convert.ToInt32(selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value);
             //        string clientName = selectedRow.Cells["ClientNameDataGridViewTextBoxColumn"].Value.ToString();
-            //        string transactionDate = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
-            //        int queuePosition = Convert.ToInt32(selectedRow.Cells["QueuePositionDataGridViewTextBoxColumn"].Value);
-            //        string requirementsStatus = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
+            //        string Date = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
+            //        string Status = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
             //        string paymentStatus = selectedRow.Cells["PaymentStatusDataGridViewTextBoxColumn"].Value.ToString();
 
-
-            //        // Check if the STM form is already running
+            //        // Add the selected row's data to the STM form
             //        if (stmForm != null && !stmForm.IsDisposed)
             //        {
-            //            // Add new data to the existing table layout panel in the form
-            //            stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+
+            //            stmForm.QueHere(clientName, Date, Status, paymentStatus, ID);
+                        
             //        }
             //        else
             //        {
-            //            // Create a new instance of the STM form
-            //            stmForm = new STM();
-
-            //            // Add the first set of data to the table layout panel
-            //            stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
-
-            //            // Show the STM form
-            //            stmForm.Show();
+            //            MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //        }
             //    }
             //    else
@@ -269,13 +328,36 @@ namespace WindowsFormsApp2
             //{
             //    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             //}
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             FetchAndSyncGoogleSheetsData();
-            this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
             
+        }
+
+        private void TM_Tick(object sender, EventArgs e)
+        {
+            if (seconds >= 20)
+            {
+                
+                TM.Enabled = false;
+                seconds = 0;
+                lblTimer.ResetText();
+                TM.Enabled = true;
+                FetchAndSyncGoogleSheetsData();
+            }
+            else
+            {
+                lblTimer.Text = $"Time Elapsed: {seconds++} seconds";
+            }
+            
+        }
+
+        private void lblTimer_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

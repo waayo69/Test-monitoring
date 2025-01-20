@@ -16,6 +16,13 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
         }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            UpdatePercentage();
+        }
+
+        private Dictionary<string, List<string>> clientAssociations = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> processedItems = new Dictionary<string, List<string>>();
 
         private void lblRemove_Click(object sender, EventArgs e)
         {
@@ -32,7 +39,7 @@ namespace WindowsFormsApp2
                 }
 
                 // Display success message
-                MessageBox.Show("Selected items were successfully removed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                //MessageBox.Show("Selected items were successfully removed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
@@ -79,11 +86,6 @@ namespace WindowsFormsApp2
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void UpdatePercentage()
         {
             // Calculate the percentage of items in checkedListBox2 compared to the total in both lists
@@ -101,7 +103,7 @@ namespace WindowsFormsApp2
             }
         }
 
-        private Dictionary<string, List<string>> clientAssociations = new Dictionary<string, List<string>>();
+
 
 
         public void AddClientToComboBox(string clientName, int queuePosition)
@@ -111,31 +113,6 @@ namespace WindowsFormsApp2
 
             // Add the data to the ComboBox
             cmbClients.Items.Add(displayText);
-        }
-
-        private void comboBoxItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblPercent_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void checkedListBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            UpdatePercentage();
         }
 
         private void cmbClients_SelectedIndexChanged(object sender, EventArgs e)
@@ -167,8 +144,6 @@ namespace WindowsFormsApp2
             // Update percentage
             UpdateProcessedPercentage();
         }
-
-
 
         private void btnAddToClient_Click(object sender, EventArgs e)
         {
@@ -250,10 +225,6 @@ namespace WindowsFormsApp2
             MessageBox.Show("Selected items were successfully removed from the client.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-
-        private Dictionary<string, List<string>> processedItems = new Dictionary<string, List<string>>();
-
-
         private void btnProcessed_Click(object sender, EventArgs e)
         {
             string selectedClient = cmbClients.SelectedItem?.ToString();
@@ -330,8 +301,5 @@ namespace WindowsFormsApp2
                 lblPercent.Text = "Processed: 0%";
             }
         }
-
-
-
     }
 }

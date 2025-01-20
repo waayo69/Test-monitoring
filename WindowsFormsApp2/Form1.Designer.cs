@@ -53,7 +53,6 @@
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(423, 174);
             this.checkedListBox1.TabIndex = 0;
-            this.checkedListBox1.SelectedIndexChanged += new System.EventHandler(this.checkedListBox1_SelectedIndexChanged);
             // 
             // comboBoxItems
             // 
@@ -93,7 +92,6 @@
             this.comboBoxItems.Size = new System.Drawing.Size(423, 24);
             this.comboBoxItems.Sorted = true;
             this.comboBoxItems.TabIndex = 1;
-            this.comboBoxItems.SelectedIndexChanged += new System.EventHandler(this.comboBoxItems_SelectedIndexChanged);
             // 
             // btnGetSelection
             // 
@@ -167,7 +165,6 @@
             this.checkedListBox2.Name = "checkedListBox2";
             this.checkedListBox2.Size = new System.Drawing.Size(423, 123);
             this.checkedListBox2.TabIndex = 8;
-            this.checkedListBox2.SelectedIndexChanged += new System.EventHandler(this.checkedListBox2_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -196,7 +193,6 @@
             this.lblPercent.Size = new System.Drawing.Size(53, 16);
             this.lblPercent.TabIndex = 11;
             this.lblPercent.Text = "Percent";
-            this.lblPercent.Click += new System.EventHandler(this.lblPercent_Click);
             // 
             // cmbClients
             // 
@@ -205,7 +201,6 @@
             this.cmbClients.Name = "cmbClients";
             this.cmbClients.Size = new System.Drawing.Size(423, 24);
             this.cmbClients.TabIndex = 12;
-            this.cmbClients.SelectedIndexChanged += new System.EventHandler(this.cmbClients_SelectedIndexChanged);
             // 
             // btnAddToClient
             // 
