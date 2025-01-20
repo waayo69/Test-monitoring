@@ -5,8 +5,10 @@ using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -16,10 +18,15 @@ namespace WindowsFormsApp2
     {
         private static readonly string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         private static readonly string ApplicationName = "Google Sheets Integration";
-        private static readonly string SpreadsheetId = "1dCshOpmc9WO-WQR6XV264NgWiOkJR42ZSRYoBocj7sw"; // Replace with your Google Sheets ID
+        private static readonly string SpreadsheetId = "1KcxnijTnyoCnTPGa8J1rSdEOip7v23P86Hooyuun0eQ"; // Replace with your Google Sheets ID
         private static readonly string SheetName = "Clients"; // Sheet name should match your database table
         private STM stmForm; // Class-level reference to the STM form
-
+        System.Windows.Forms.Timer timer2 = new System.Windows.Forms.Timer();
+        private bool isMinimized = false;
+        private int seconds = 0;
+        private IList<IList<object>> fetchedRows = new List<IList<object>>(); // To store the rows fetched from Google Sheets
+        private Dictionary<string, List<string>> clientAssociations = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> processedItems = new Dictionary<string, List<string>>();
         public Monitor()
         {
             InitializeComponent();
@@ -34,8 +41,19 @@ namespace WindowsFormsApp2
             // Fetch data from Google Sheets and update the database
             
             ShowSTMOnSecondMonitor();
-            
-            
+            //ShowForm1();
+        }
+        private void ShowForm1()
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
+        }
+
+        private void LoadDataIntoDataGridView()
+        {
+            bindingList = new BindingList<MonitorClass.MonitorRecord>(monitor.LoadMonitorDGV());
+            //List<MonitorClass.MonitorRecord> mon = monitor.LoadMonitorDGV(); 
+            DataGridView1.DataSource = bindingList;
         }
         private void ShowSTMOnSecondMonitor()
         {
@@ -106,10 +124,16 @@ namespace WindowsFormsApp2
                 {
                     foreach (var row in values)
                     {
-                        UpdateDatabase(row);
+                        UpdateDatabase(row);    
+                        this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+                        
                     }
-
-                    MessageBox.Show("Data synchronized successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lblMessage.Text = $"Data synchronized successfully from Google Sheets!";
+                    //MessageBox.Show("Data synchronized successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                    //MessageBox.Show("Data synchronized successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                    //MessageBox.Show("Data synchronized successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -126,64 +150,66 @@ namespace WindowsFormsApp2
         {
             try
             {
-                // Establish a connection to the SQL Server database
-                using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
+                // Skip any row that doesn't have at least 6 columns (index 0-5)
+                if (row.Count < 6)
                 {
-                    connection.Open();
+                    MessageBox.Show("Row does not contain enough data.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                
+                // Assuming row[0] is ClientID
+                int clientID = Convert.ToInt32(row[0]);
 
-                    // Check if the record exists
-                    var query = "SELECT COUNT(*) FROM Clients WHERE ClientID = @ClientID";
-                    using (var checkCmd = new SqlCommand(query, connection))
+                // Check if the client already exists in the database
+                var existingClient = db.Clients.FirstOrDefault(c => c.ClientID == clientID);
+
+                if (existingClient != null)
+                {
+                    // Update the existing record
+                    existingClient.InvoiceNumber = row[1].ToString();
+                    existingClient.ClientName = row[2].ToString();
+                    existingClient.TransactionDate = DateTime.Parse(row[3].ToString());
+                    existingClient.QueuePosition = int.Parse(row[4].ToString());
+                    existingClient.RequirementsStatus = row[5].ToString();
+                    existingClient.PaymentStatus = row[6].ToString(); // Handle cases if PaymentStatus is missing
+                }
+                else
+                {
+                    // Insert a new record
+                    var newClient = new Client
                     {
-                        checkCmd.Parameters.AddWithValue("@ClientID", row[0]); // Assuming ClientID is in column A
-                        int count = (int)checkCmd.ExecuteScalar();
-
-                        if (count > 0)
-                        {
-                            // Update existing record
-                            query = @"
-                                UPDATE Clients
-                                SET ClientName = @ClientName,
-                                    TransactionDate = @TransactionDate,
-                                    QueuePosition = @QueuePosition,
-                                    RequirementsStatus = @RequirementsStatus,
-                                    PaymentStatus = @PaymentStatus,
-                                    ID=@ID
-                                WHERE ClientID = @ClientID";
-
-                            using (var updateCmd = new SqlCommand(query, connection))
-                            {
-                                //updateCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]);
-                                updateCmd.Parameters.AddWithValue("@ClientName", row[1]);
-                                updateCmd.Parameters.AddWithValue("@TransactionDate",(row[2]));
-                                updateCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
-                                updateCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
-                                updateCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
-                                updateCmd.Parameters.AddWithValue("@ID", row[6]);
-                                updateCmd.ExecuteNonQuery();
-                            } 
-                        }
-                        else
-                        {
-                            // Insert new record
-                            query = @"
-                                INSERT INTO Clients (ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus, ID)
-                                VALUES (@ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus, @ID)";
-
+                        ClientID = clientID,
+                        InvoiceNumber = row[1].ToString(),
+                        ClientName = row[2].ToString(),
+                        TransactionDate = DateTime.Parse(row[3].ToString()),
+                        QueuePosition = int.Parse(row[4].ToString()),
                             using (var insertCmd = new SqlCommand(query, connection))
                             {
-                                //insertCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]);
+                                insertCmd.Parameters.AddWithValue("@ID", row[0]); // Assuming ID is in column A
                                 insertCmd.Parameters.AddWithValue("@ClientName", row[1]);
-                                insertCmd.Parameters.AddWithValue("@TransactionDate", (row[2]));
+                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[2]));
                                 insertCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
                                 insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
                                 insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
-                                insertCmd.Parameters.AddWithValue("@ID", row[6]);
                                 insertCmd.ExecuteNonQuery();
+                                // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
+                                this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+
+                // Submit the changes to the database
+                db.SubmitChanges();
+                
+                            }
+                        }
+                    }
+                                this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
                             }
                         }
                     }
                 }
+
+                // Submit the changes to the database
+                db.SubmitChanges();
+                
             }
             catch (Exception ex)
             {
@@ -195,30 +221,112 @@ namespace WindowsFormsApp2
         {
             try
             {
-                // Ensure a row is selected
-                if (DataGridView1.SelectedRows.Count > 0)
-                {
-                    // Access the first selected row
-                    DataGridViewRow selectedRow = DataGridView1.SelectedRows[0];
-
-                    // Retrieve data from the selected row
                     string ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
-                    int clientID = Convert.ToInt32(selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
                     string clientName = selectedRow.Cells["ClientNameDataGridViewTextBoxColumn"].Value.ToString();
                     string transactionDate = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
                     int queuePosition = Convert.ToInt32(selectedRow.Cells["QueuePositionDataGridViewTextBoxColumn"].Value);
                     string requirementsStatus = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
                     string paymentStatus = selectedRow.Cells["PaymentStatusDataGridViewTextBoxColumn"].Value.ToString();
 
-                    // Add the selected row's data to the STM form
-                    if (stmForm != null && !stmForm.IsDisposed)
+
+
+                    if (paymentStatus == "Unpaid")
                     {
-                        stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                        MessageBox.Show("not yet paid","Cyrile", MessageBoxButtons.OK);
                     }
                     else
                     {
-                        MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        if (stmForm != null && !stmForm.IsDisposed)
+                        {
+                            stmForm.WindowState = FormWindowState.Minimized;
+                            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+                            {
+                                Interval = 10 // 1 second delay
+                            };
+
+                            // Transfer data after restoring STM
+                            stmForm.AddRowToTable(clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                            timer.Tick += (s, args) =>
+                            {
+                                timer.Stop();
+                                stmForm.WindowState = FormWindowState.Maximized;
+
+                            };
+
+                            timer.Start();
+                        }
+                        else
+                        {
+                            MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        cmbClients.Items.Add(clientName);
                     }
+                    // Add the selected row's dqqata to the STM form
+                    
+
+
+                    
+                    // Update the percentage dynamically
+
+
+
+
+                    Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+                    if (form1Instance != null)
+                    {
+                        form1Instance.AddClientToComboBox(queuePosition, clientName);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Form1 is not currently open.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        {
+                            MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        cmbClients.Items.Add(clientName);
+                    }
+                    // Add the selected row's dqqata to the STM form
+                    
+
+
+                    
+                    // Update the percentage dynamically
+
+
+
+
+                    Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+                    if (form1Instance != null)
+                    {
+                        form1Instance.AddClientToComboBox(queuePosition, clientName);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Form1 is not currently open.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        {
+                            MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        cmbClients.Items.Add(clientName);
+                    }
+                    // Add the selected row's dqqata to the STM form
+                    
+
+
+                    
+                    // Update the percentage dynamically
+
+
+
+
+                    Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+                    if (form1Instance != null)
+                    {
+                        form1Instance.AddClientToComboBox(queuePosition, clientName);
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Form1 is not currently open.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    addclienttocombobox( queuePosition,clientName);
                 }
                 else
                 {
@@ -235,52 +343,207 @@ namespace WindowsFormsApp2
             //    // Ensure a row is selected
             //    if (DataGridView1.SelectedRows.Count > 0)
             //    {
-            //        // Access the first selected row
-            //        DataGridViewRow selectedRow = DataGridView1.SelectedRows[0];
+        }
+        private void lblTimer_Click(object sender, EventArgs e)
+        {
 
-            //        // Retrieve data from the selected row
-            //        string ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
-            //        int clientID = Convert.ToInt32(selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
-            //        string clientName = selectedRow.Cells["ClientNameDataGridViewTextBoxColumn"].Value.ToString();
-            //        string transactionDate = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
-            //        int queuePosition = Convert.ToInt32(selectedRow.Cells["QueuePositionDataGridViewTextBoxColumn"].Value);
-            //        string requirementsStatus = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
-            //        string paymentStatus = selectedRow.Cells["PaymentStatusDataGridViewTextBoxColumn"].Value.ToString();
-
-
-            //        // Check if the STM form is already running
-            //        if (stmForm != null && !stmForm.IsDisposed)
-            //        {
-            //            // Add new data to the existing table layout panel in the form
-            //            stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
-            //        }
-            //        else
-            //        {
-            //            // Create a new instance of the STM form
-            //            stmForm = new STM();
-
-            //            // Add the first set of data to the table layout panel
-            //            stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
-
-            //            // Show the STM form
-            //            stmForm.Show();
-            //        }
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("Please select a row from the table.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //}
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void cmbClients_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
-            FetchAndSyncGoogleSheetsData();
+            string selectedClient = cmbClients.SelectedItem?.ToString();
+
+            if (string.IsNullOrEmpty(selectedClient)) return;
+
+            // Load unprocessed items into checkedListBox1
+            checkedListBox1.Items.Clear();
+            if (clientAssociations.ContainsKey(selectedClient))
+            {
+                foreach (var item in clientAssociations[selectedClient])
+                {
+                    checkedListBox1.Items.Add(item);
+                }
+            }
+
+            // Load processed items into checkedListBox2
+            checkedListBox2.Items.Clear();
+            if (processedItems.ContainsKey(selectedClient))
+            {
+                foreach (var item in processedItems[selectedClient])
+                {
+                    checkedListBox2.Items.Add(item);
+                }
+            }
+        }
+
+        private void btnAddToClient_Click(object sender, EventArgs e)
+        {
+            string selectedClient = cmbClients.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedClient))
+            {
+                MessageBox.Show("Please select a client before adding items.", "No Client Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string newItem = comboBoxItems.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(newItem))
+            {
+                MessageBox.Show("Please select an item to add.", "No Item Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Ensure the client has a list of items in clientAssociations
+            if (!clientAssociations.ContainsKey(selectedClient))
+            {
+                clientAssociations[selectedClient] = new List<string>();
+            }
+            // Check if the item already exists in the client's list
+            if (clientAssociations[selectedClient].Contains(newItem) ||
+                (processedItems.ContainsKey(selectedClient) && processedItems[selectedClient].Contains(newItem)))
+            {
+                MessageBox.Show("This item is already associated with the selected client.", "Duplicate Item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Add the item to the client's list of unprocessed items
+            clientAssociations[selectedClient].Add(newItem);
+            checkedListBox1.Items.Add(newItem);
+
+            // Update the percentage dynamically
+            UpdateProcessedPercentage();
+
+            MessageBox.Show("Item successfully added to the client.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            UpdateProcessedPercentage();
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnProcessed_Click(object sender, EventArgs e)
+        {
+            string selectedClient = cmbClients.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedClient))
+            {
+                MessageBox.Show("Please select a client before processing.", "No Client Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!clientAssociations.ContainsKey(selectedClient) || clientAssociations[selectedClient].Count == 0)
+            {
+                MessageBox.Show("No items are associated with this client to process.", "No Items", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Initialize processed items for the client if not already present
+            if (!processedItems.ContainsKey(selectedClient))
+            {
+                processedItems[selectedClient] = new List<string>();
+            }
+
+            // Transfer checked items to processed items
+            foreach (var item in checkedListBox1.CheckedItems)
+            {
+                string itemStr = item.ToString();
+                if (!processedItems[selectedClient].Contains(itemStr))
+                {
+                    checkedListBox2.Items.Add(itemStr);
+                    processedItems[selectedClient].Add(itemStr); // Add to processed items
+                }
+            }
+
+            // Remove processed items from checkedListBox1 and clientAssociations
+            for (int i = checkedListBox1.CheckedItems.Count - 1; i >= 0; i--)
+            {
+                string itemToRemove = checkedListBox1.CheckedItems[i].ToString();
+                checkedListBox1.Items.Remove(itemToRemove);
+                clientAssociations[selectedClient].Remove(itemToRemove);
+            }
+
+            UpdateProcessedPercentage();
+
+            if (stmForm != null && !stmForm.IsDisposed)
+            {
+                double percentage = (double)processedItems[selectedClient].Count /
+                                    (clientAssociations[selectedClient].Count + processedItems[selectedClient].Count) * 100;
+
+                stmForm.UpdateProgressBar(selectedClient, percentage);
+            }
+            MessageBox.Show("Items successfully processed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void radioButtonSelectAll_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonSelectAll.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+            }
+        }
+
+        private void radioButtonDeselect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonDeselect.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, false);
+                }
+            }
+        }
+
+        private void lblPercent_Click(object sender, EventArgs e)
+        {
+
+            if (radioButtonSelectAll.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+            }
+        }
+
+        private void radioButtonDeselect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonDeselect.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, false);
+                }
+            }
+        }
+
+        private void lblPercent_Click(object sender, EventArgs e)
+        {
+
+            if (radioButtonSelectAll.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, true);
+                }
+            }
+        }
+
+        private void radioButtonDeselect_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonDeselect.Checked)
+            {
+                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                {
+                    checkedListBox1.SetItemChecked(i, false);
+                }
+            }
+        }
+
+        private void lblPercent_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

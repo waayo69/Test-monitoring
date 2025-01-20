@@ -28,23 +28,27 @@ namespace WindowsFormsApp2
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
         }
 
-        public void AddRowToTable(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
+        public void QueHere(string clientName,string Date,string Status,string paymentStatus,int ID)
+        {
+
+        }
+
+        
+        public void AddRowToTable(int clientID, string invoiceNumber, string clientName, string transactionDate, string requirementsStatus, string paymentStatus)
         {
             // Define row index
             int rowIndex = tableLayoutPanel1.RowCount;
 
-            // Increase the row count
+            // Increase the row countqq
             tableLayoutPanel1.RowCount += 1;
 
             // Set the new row style
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            // Add controls (e.g., Labels) for each data point
-            tableLayoutPanel1.Controls.Add(new Label { Text = ID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
-            //tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = queuePosition.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = invoiceNumber, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
             Label requirementsLabel = new Label
             {
                 Text = requirementsStatus,
