@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -34,8 +35,14 @@ namespace WindowsFormsApp2
             // Fetch data from Google Sheets and update the database
             
             ShowSTMOnSecondMonitor();
-            
-            
+            ShowForm1();
+
+
+        }
+        private void ShowForm1()
+        {
+            Form1 form1 = new Form1();
+            form1.Show();
         }
         private void ShowSTMOnSecondMonitor()
         {
@@ -132,53 +139,32 @@ namespace WindowsFormsApp2
                     connection.Open();
 
                     // Check if the record exists
-                    var query = "SELECT COUNT(*) FROM Clients WHERE ClientID = @ClientID";
+                    var query = "SELECT COUNT(*) FROM Clients WHERE ID=@ID";
                     using (var checkCmd = new SqlCommand(query, connection))
                     {
-                        checkCmd.Parameters.AddWithValue("@ClientID", row[0]); // Assuming ClientID is in column A
+                        checkCmd.Parameters.AddWithValue("ID", row[6]); // Assuming ClientID is in column A
                         int count = (int)checkCmd.ExecuteScalar();
 
                         if (count > 0)
                         {
-                            // Update existing record
-                            query = @"
-                                UPDATE Clients
-                                SET ClientName = @ClientName,
-                                    TransactionDate = @TransactionDate,
-                                    QueuePosition = @QueuePosition,
-                                    RequirementsStatus = @RequirementsStatus,
-                                    PaymentStatus = @PaymentStatus,
-                                    ID=@ID
-                                WHERE ClientID = @ClientID";
-
-                            using (var updateCmd = new SqlCommand(query, connection))
-                            {
-                                //updateCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]);
-                                updateCmd.Parameters.AddWithValue("@ClientName", row[1]);
-                                updateCmd.Parameters.AddWithValue("@TransactionDate",(row[2]));
-                                updateCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
-                                updateCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
-                                updateCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
-                                updateCmd.Parameters.AddWithValue("@ID", row[6]);
-                                updateCmd.ExecuteNonQuery();
-                            } 
+                            // Skip the existing record
+                            return;
                         }
                         else
                         {
                             // Insert new record
                             query = @"
-                                INSERT INTO Clients (ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus, ID)
-                                VALUES (@ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus, @ID)";
+                        INSERT INTO Clients (ID, ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus)
+                        VALUES (@ID, @ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus)";
 
                             using (var insertCmd = new SqlCommand(query, connection))
                             {
-                                //insertCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]);
+                                insertCmd.Parameters.AddWithValue("@ID", row[0]); // Assuming ID is in column A
                                 insertCmd.Parameters.AddWithValue("@ClientName", row[1]);
-                                insertCmd.Parameters.AddWithValue("@TransactionDate", (row[2]));
+                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[2]));
                                 insertCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
                                 insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
                                 insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
-                                insertCmd.Parameters.AddWithValue("@ID", row[6]);
                                 insertCmd.ExecuteNonQuery();
                             }
                         }
@@ -203,7 +189,6 @@ namespace WindowsFormsApp2
 
                     // Retrieve data from the selected row
                     string ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
-                    int clientID = Convert.ToInt32(selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
                     string clientName = selectedRow.Cells["ClientNameDataGridViewTextBoxColumn"].Value.ToString();
                     string transactionDate = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
                     int queuePosition = Convert.ToInt32(selectedRow.Cells["QueuePositionDataGridViewTextBoxColumn"].Value);
@@ -213,11 +198,20 @@ namespace WindowsFormsApp2
                     // Add the selected row's data to the STM form
                     if (stmForm != null && !stmForm.IsDisposed)
                     {
-                        stmForm.AddRowToTable(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                        stmForm.AddRowToTable( clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
                     }
                     else
                     {
                         MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
+                    if (form1Instance != null)
+                    {
+                        form1Instance.AddClientToComboBox(clientName, queuePosition);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Form1 is not currently open.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
@@ -279,8 +273,9 @@ namespace WindowsFormsApp2
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
             FetchAndSyncGoogleSheetsData();
+            this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+            
         }
     }
 }

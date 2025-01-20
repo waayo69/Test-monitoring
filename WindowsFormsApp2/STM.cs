@@ -28,12 +28,12 @@ namespace WindowsFormsApp2
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
         }
 
-        public void AddRowToTable(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
+        public void AddRowToTable(string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
         {
             // Define row index
             int rowIndex = tableLayoutPanel1.RowCount;
 
-            // Increase the row count
+            // Increase the row countqq
             tableLayoutPanel1.RowCount += 1;
 
             // Set the new row style
