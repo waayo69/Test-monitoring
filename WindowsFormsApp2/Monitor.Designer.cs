@@ -30,10 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.DataGridView1 = new System.Windows.Forms.DataGridView();
-            this.btnSend = new System.Windows.Forms.Button();
-            this.dbqueueDataSet3 = new WindowsFormsApp2.dbqueueDataSet3();
-            this.clientsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.clientsTableAdapter1 = new WindowsFormsApp2.dbqueueDataSet3TableAdapters.ClientsTableAdapter();
             this.IDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,14 +37,20 @@
             this.queuePositionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.requirementsStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.paymentStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clientsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.dbqueueDataSet3 = new WindowsFormsApp2.dbqueueDataSet3();
+            this.btnSend = new System.Windows.Forms.Button();
+            this.clientsTableAdapter1 = new WindowsFormsApp2.dbqueueDataSet3TableAdapters.ClientsTableAdapter();
             this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).BeginInit();
             this.SuspendLayout();
             // 
             // DataGridView1
             // 
+            this.DataGridView1.AllowUserToResizeColumns = false;
+            this.DataGridView1.AllowUserToResizeRows = false;
             this.DataGridView1.AutoGenerateColumns = false;
             this.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -65,35 +67,11 @@
             this.DataGridView1.Location = new System.Drawing.Point(50, 40);
             this.DataGridView1.Name = "DataGridView1";
             this.DataGridView1.RowHeadersWidth = 51;
+            this.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.DataGridView1.RowTemplate.Height = 24;
             this.DataGridView1.Size = new System.Drawing.Size(924, 269);
             this.DataGridView1.TabIndex = 0;
             this.DataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // btnSend
-            // 
-            this.btnSend.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnSend.Location = new System.Drawing.Point(803, 354);
-            this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(171, 52);
-            this.btnSend.TabIndex = 1;
-            this.btnSend.Text = "Send to monitoring";
-            this.btnSend.UseVisualStyleBackColor = false;
-            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
-            // 
-            // dbqueueDataSet3
-            // 
-            this.dbqueueDataSet3.DataSetName = "dbqueueDataSet3";
-            this.dbqueueDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // clientsBindingSource1
-            // 
-            this.clientsBindingSource1.DataMember = "Clients";
-            this.clientsBindingSource1.DataSource = this.dbqueueDataSet3;
-            // 
-            // clientsTableAdapter1
-            // 
-            this.clientsTableAdapter1.ClearBeforeFill = true;
             // 
             // IDDataGridViewTextBoxColumn
             // 
@@ -145,6 +123,31 @@
             this.paymentStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.paymentStatusDataGridViewTextBoxColumn.Name = "paymentStatusDataGridViewTextBoxColumn";
             // 
+            // clientsBindingSource1
+            // 
+            this.clientsBindingSource1.DataMember = "Clients";
+            this.clientsBindingSource1.DataSource = this.dbqueueDataSet3;
+            // 
+            // dbqueueDataSet3
+            // 
+            this.dbqueueDataSet3.DataSetName = "dbqueueDataSet3";
+            this.dbqueueDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // btnSend
+            // 
+            this.btnSend.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.btnSend.Location = new System.Drawing.Point(803, 354);
+            this.btnSend.Name = "btnSend";
+            this.btnSend.Size = new System.Drawing.Size(171, 52);
+            this.btnSend.TabIndex = 1;
+            this.btnSend.Text = "Send to monitoring";
+            this.btnSend.UseVisualStyleBackColor = false;
+            this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
+            // 
+            // clientsTableAdapter1
+            // 
+            this.clientsTableAdapter1.ClearBeforeFill = true;
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(104, 354);
@@ -168,8 +171,8 @@
             this.Text = "Monitor";
             this.Load += new System.EventHandler(this.Monitor_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).EndInit();
             this.ResumeLayout(false);
 
         }
