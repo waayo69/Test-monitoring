@@ -334,7 +334,6 @@ namespace WindowsFormsApp2
         private void button1_Click(object sender, EventArgs e)
         {
             FetchAndSyncGoogleSheetsData();
-            
         }
 
         private void TM_Tick(object sender, EventArgs e)
