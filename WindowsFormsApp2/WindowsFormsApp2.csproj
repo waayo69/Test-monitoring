@@ -65,6 +65,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="bastaKani.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>bastaKani.xsd</DependentUpon>
+    </Compile>
     <Compile Include="dbqueueDataSet2.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -113,6 +118,17 @@
     <EmbeddedResource Include="STM.resx">
       <DependentUpon>STM.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="bastaKani.xsc">
+      <DependentUpon>bastaKani.xsd</DependentUpon>
+    </None>
+    <None Include="bastaKani.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>bastaKani.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="bastaKani.xss">
+      <DependentUpon>bastaKani.xsd</DependentUpon>
+    </None>
     <None Include="dbqueueDataSet2.xsc">
       <DependentUpon>dbqueueDataSet2.xsd</DependentUpon>
     </None>

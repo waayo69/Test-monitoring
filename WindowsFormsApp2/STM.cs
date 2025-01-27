@@ -14,6 +14,7 @@ namespace WindowsFormsApp2
 
     public partial class STM : Form
     {
+        private Dictionary<string, System.Windows.Forms.ProgressBar> clientProgressBars = new Dictionary<string, System.Windows.Forms.ProgressBar>();
         public STM(/*int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus*/)
         {
             InitializeComponent();
@@ -34,6 +35,7 @@ namespace WindowsFormsApp2
 
         }
 
+        
         public void AddRowToTable(string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
         {
             // Define row index
@@ -72,8 +74,73 @@ namespace WindowsFormsApp2
 
             };
             tableLayoutPanel1.Controls.Add(paymentLabel , 5, rowIndex);
-            //tableLayoutPanel1.Controls.Add(new ProgressBar { Value = 30, Maximum = 100, Dock = DockStyle.Fill, AutoSize = true,Style=ProgressBarStyle.Continuous }, 6, rowIndex);
+            // Add a ProgressBar to the TableLayoutPanel
+            var progressBar = new System.Windows.Forms.ProgressBar
+            {
+                Value = 0,
+                Maximum = 100,
+                Dock = DockStyle.Fill,
+                Style = ProgressBarStyle.Continuous
+            };
+            tableLayoutPanel1.Controls.Add(progressBar, 6, rowIndex);
+
+            // Map the progress bar to the client name
+            clientProgressBars[clientName] = progressBar;
+
+            
         }
+        public void EnableProgressBar(string clientName)
+        {
+            if (clientProgressBars.ContainsKey(clientName))
+            {
+                clientProgressBars[clientName].Enabled = true; // Enable the progress bar
+            }
+        }
+        public void UpdateProgressBar(string clientName, double percentage)
+        {
+            if (clientProgressBars.ContainsKey(clientName) && clientProgressBars[clientName].Enabled)
+            {
+                System.Windows.Forms.ProgressBar progressBar = clientProgressBars[clientName];
+                progressBar.Value = (int)Math.Min(percentage, 100); // Ensure value doesn't exceed 100
+            }
+        }
+        public void UpdateProgressForClient(string clientName)
+        {
+            // Locate the row with the matching client name
+            for (int rowIndex = 0; rowIndex < tableLayoutPanel1.RowCount; rowIndex++)
+            {
+                var clientNameControl = tableLayoutPanel1.GetControlFromPosition(1, rowIndex);
+                if (clientNameControl != null && clientNameControl.Text == clientName)
+                {
+                    // Find the progress bar in the same row
+                    var progressBar = tableLayoutPanel1.GetControlFromPosition(6, rowIndex) as System.Windows.Forms.    ProgressBar;
+                    if (progressBar != null)
+                    {
+                        // Use BackgroundWorker to update the progress bar
+                        var backgroundWorker = new BackgroundWorker();
+                        backgroundWorker.WorkerReportsProgress = true;
+
+                        backgroundWorker.DoWork += (s, e) =>
+                        {
+                            for (int i = 0; i <= 100; i++)
+                            {
+                                backgroundWorker.ReportProgress(i);
+                                System.Threading.Thread.Sleep(50); // Simulate work
+                            }
+                        };
+
+                        backgroundWorker.ProgressChanged += (s, e) =>
+                        {
+                            progressBar.Value = e.ProgressPercentage;
+                        };
+
+                        backgroundWorker.RunWorkerAsync();
+                        break;
+                    }
+                }
+            }
+        }
+
 
         //public void UpdateLabels(int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus)
         //{

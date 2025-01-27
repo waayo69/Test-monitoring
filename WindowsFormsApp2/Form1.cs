@@ -1,28 +1,37 @@
-﻿using System;
+﻿using Google.Apis.Sheets.v4.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Markup;
 
 namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
+
+        private STM stmForm; // Class-level reference to the STM form
         public Form1()
         {
             InitializeComponent();
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'bastaKani.Basta' table. You can move, or remove it, as needed.
+            this.bastaTableAdapter.Fill(this.bastaKani.Basta);
             UpdatePercentage();
         }
 
         private Dictionary<string, List<string>> clientAssociations = new Dictionary<string, List<string>>();
         private Dictionary<string, List<string>> processedItems = new Dictionary<string, List<string>>();
+        private string connectionString = "Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False";
+
 
         private void lblRemove_Click(object sender, EventArgs e)
         {
@@ -105,11 +114,10 @@ namespace WindowsFormsApp2
 
 
 
-
-        public void AddClientToComboBox(string clientName, int queuePosition)
+        public void AddClientToComboBox(int queuePosition, string clientName)
         {
             // Format the display text
-            string displayText = $"{clientName} (Queue: {queuePosition})";
+            string displayText = $" (Queue: {queuePosition} {clientName})";
 
             // Add the data to the ComboBox
             cmbClients.Items.Add(displayText);
@@ -166,7 +174,6 @@ namespace WindowsFormsApp2
             {
                 clientAssociations[selectedClient] = new List<string>();
             }
-
             // Check if the item already exists in the client's list
             if (clientAssociations[selectedClient].Contains(newItem) ||
                 (processedItems.ContainsKey(selectedClient) && processedItems[selectedClient].Contains(newItem)))
@@ -265,12 +272,81 @@ namespace WindowsFormsApp2
                 clientAssociations[selectedClient].Remove(itemToRemove);
             }
 
+            UpdateProcessedInDatabase(selectedClient, processedItems[selectedClient].Count);
             // Update the percentage
-            UpdateProcessedPercentage();
+            
 
+            UpdateProcessedPercentage();
             MessageBox.Show("Items successfully processed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void UpdateProcessedInDatabase(string clientDisplayText, int processedCount)
+        {
+            // Extract the ID from the selected client display text
+            string clientId = clientDisplayText.Split('(')[0].Trim();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string query = "UPDATE Basta SET Processed = @Processed WHERE ID = @ID";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ID", clientId);
+                    command.Parameters.AddWithValue("@Processed", processedCount);
+                    
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private void UpdateDatabase(IList<object> row)
+        {
+            try
+            {
+                // Establish a connection to the SQL Server database
+                using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
+                {
+                    connection.Open();
+
+                    // Check if the record exists
+                    var query = "SELECT COUNT(*) FROM Basta WHERE ID=@ID";
+                    using (var checkCmd = new SqlCommand(query, connection))
+                    {
+                        checkCmd.Parameters.AddWithValue("ID", row[6]); // Assuming ClientID is in column A
+                        int count = (int)checkCmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            // Skip the existing record
+                            return;
+                        }
+                        else
+                        {
+                            // Insert new record
+                            query = @"
+                        INSERT INTO Clients (ID, Processed, ClientName)
+                        VALUES (@ID, @Processed, @ClientName)";
+
+                            using (var insertCmd = new SqlCommand(query, connection))
+                            {
+                                insertCmd.Parameters.AddWithValue("@ID", row[0]); // Assuming ID is in column A
+                                insertCmd.Parameters.AddWithValue("@Processed", 1);
+                                insertCmd.Parameters.AddWithValue("@ClientName", row[2]);
+                                insertCmd.ExecuteNonQuery();
+                                // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
+                                this.bastaTableAdapter.Fill(this.bastaKani.Basta);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void UpdateProcessedPercentage()
         {

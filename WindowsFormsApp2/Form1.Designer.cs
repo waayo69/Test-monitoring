@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.comboBoxItems = new System.Windows.Forms.ComboBox();
             this.btnGetSelection = new System.Windows.Forms.Button();
@@ -43,12 +44,23 @@
             this.cmbClients = new System.Windows.Forms.ComboBox();
             this.btnAddToClient = new System.Windows.Forms.Button();
             this.btnRemoveFromClient = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.iDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.processedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bastaBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.bastaKani = new WindowsFormsApp2.bastaKani();
+            this.bastaTableAdapter = new WindowsFormsApp2.bastaKaniTableAdapters.BastaTableAdapter();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bastaBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bastaKani)).BeginInit();
             this.SuspendLayout();
             // 
             // checkedListBox1
             // 
+            this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(73, 221);
+            this.checkedListBox1.Location = new System.Drawing.Point(73, 264);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(423, 174);
@@ -86,7 +98,7 @@
             "Senior Citizen ID",
             "Solo Parent ID",
             "SSS ID"});
-            this.comboBoxItems.Location = new System.Drawing.Point(73, 150);
+            this.comboBoxItems.Location = new System.Drawing.Point(74, 191);
             this.comboBoxItems.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxItems.Name = "comboBoxItems";
             this.comboBoxItems.Size = new System.Drawing.Size(423, 24);
@@ -127,7 +139,7 @@
             // radioButtonSelectAll
             // 
             this.radioButtonSelectAll.AutoSize = true;
-            this.radioButtonSelectAll.Location = new System.Drawing.Point(73, 194);
+            this.radioButtonSelectAll.Location = new System.Drawing.Point(73, 237);
             this.radioButtonSelectAll.Name = "radioButtonSelectAll";
             this.radioButtonSelectAll.Size = new System.Drawing.Size(83, 20);
             this.radioButtonSelectAll.TabIndex = 5;
@@ -139,7 +151,7 @@
             // radioButtonDeselect
             // 
             this.radioButtonDeselect.AutoSize = true;
-            this.radioButtonDeselect.Location = new System.Drawing.Point(176, 194);
+            this.radioButtonDeselect.Location = new System.Drawing.Point(176, 237);
             this.radioButtonDeselect.Name = "radioButtonDeselect";
             this.radioButtonDeselect.Size = new System.Drawing.Size(99, 20);
             this.radioButtonDeselect.TabIndex = 6;
@@ -159,8 +171,9 @@
             // 
             // checkedListBox2
             // 
+            this.checkedListBox2.CheckOnClick = true;
             this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(73, 445);
+            this.checkedListBox2.Location = new System.Drawing.Point(73, 488);
             this.checkedListBox2.Margin = new System.Windows.Forms.Padding(4);
             this.checkedListBox2.Name = "checkedListBox2";
             this.checkedListBox2.Size = new System.Drawing.Size(423, 123);
@@ -169,7 +182,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(70, 425);
+            this.label1.Location = new System.Drawing.Point(70, 468);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 16);
             this.label1.TabIndex = 9;
@@ -188,7 +201,7 @@
             // lblPercent
             // 
             this.lblPercent.AutoSize = true;
-            this.lblPercent.Location = new System.Drawing.Point(205, 403);
+            this.lblPercent.Location = new System.Drawing.Point(205, 446);
             this.lblPercent.Name = "lblPercent";
             this.lblPercent.Size = new System.Drawing.Size(53, 16);
             this.lblPercent.TabIndex = 11;
@@ -201,6 +214,7 @@
             this.cmbClients.Name = "cmbClients";
             this.cmbClients.Size = new System.Drawing.Size(423, 24);
             this.cmbClients.TabIndex = 12;
+            this.cmbClients.SelectedIndexChanged += new System.EventHandler(this.cmbClients_SelectedIndexChanged);
             // 
             // btnAddToClient
             // 
@@ -222,11 +236,66 @@
             this.btnRemoveFromClient.UseVisualStyleBackColor = true;
             this.btnRemoveFromClient.Click += new System.EventHandler(this.btnRemoveFromClient_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.iDDataGridViewTextBoxColumn,
+            this.processedDataGridViewTextBoxColumn,
+            this.clientNameDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.bastaBindingSource;
+            this.dataGridView1.Location = new System.Drawing.Point(75, 100);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(422, 84);
+            this.dataGridView1.TabIndex = 15;
+            // 
+            // iDDataGridViewTextBoxColumn
+            // 
+            this.iDDataGridViewTextBoxColumn.DataPropertyName = "ID";
+            this.iDDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.iDDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.iDDataGridViewTextBoxColumn.Name = "iDDataGridViewTextBoxColumn";
+            this.iDDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // processedDataGridViewTextBoxColumn
+            // 
+            this.processedDataGridViewTextBoxColumn.DataPropertyName = "Processed";
+            this.processedDataGridViewTextBoxColumn.HeaderText = "Processed";
+            this.processedDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.processedDataGridViewTextBoxColumn.Name = "processedDataGridViewTextBoxColumn";
+            this.processedDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // clientNameDataGridViewTextBoxColumn
+            // 
+            this.clientNameDataGridViewTextBoxColumn.DataPropertyName = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.HeaderText = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.clientNameDataGridViewTextBoxColumn.Name = "clientNameDataGridViewTextBoxColumn";
+            this.clientNameDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // bastaBindingSource
+            // 
+            this.bastaBindingSource.DataMember = "Basta";
+            this.bastaBindingSource.DataSource = this.bastaKani;
+            // 
+            // bastaKani
+            // 
+            this.bastaKani.DataSetName = "bastaKani";
+            this.bastaKani.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // bastaTableAdapter
+            // 
+            this.bastaTableAdapter.ClearBeforeFill = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(705, 592);
+            this.ClientSize = new System.Drawing.Size(705, 633);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnRemoveFromClient);
             this.Controls.Add(this.btnAddToClient);
             this.Controls.Add(this.cmbClients);
@@ -247,6 +316,9 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Planning";
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bastaBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bastaKani)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -269,6 +341,13 @@
         private System.Windows.Forms.ComboBox cmbClients;
         private System.Windows.Forms.Button btnAddToClient;
         private System.Windows.Forms.Button btnRemoveFromClient;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private bastaKani bastaKani;
+        private System.Windows.Forms.BindingSource bastaBindingSource;
+        private bastaKaniTableAdapters.BastaTableAdapter bastaTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn processedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clientNameDataGridViewTextBoxColumn;
     }
 }
 
