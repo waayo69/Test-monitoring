@@ -33,5 +33,16 @@ namespace WindowsFormsApp2.Properties {
                 return ((string)(this["dbqueue"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encr" +
+            "ypt=False;TrustServerCertificate=True")]
+        public string dbqueueConnectionString {
+            get {
+                return ((string)(this["dbqueueConnectionString"]));
+            }
+        }
     }
 }

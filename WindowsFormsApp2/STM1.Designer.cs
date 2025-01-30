@@ -1,6 +1,6 @@
 ﻿namespace WindowsFormsApp2
 {
-    partial class STM
+    partial class STM1
     {
         /// <summary>
         /// Required designer variable.

@@ -4,6 +4,7 @@ using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
@@ -12,6 +13,7 @@ using System.Reflection;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace WindowsFormsApp2
@@ -22,13 +24,14 @@ namespace WindowsFormsApp2
         private static readonly string ApplicationName = "Google Sheets Integration";
         private static readonly string SpreadsheetId = "1dCshOpmc9WO-WQR6XV264NgWiOkJR42ZSRYoBocj7sw"; // Replace with your Google Sheets ID
         private static readonly string SheetName = "Clients"; // Sheet name should match your database table
-        private STM stmForm; // Class-level reference to the STM form
+        private STM1 stmForm; // Class-level reference to the STM form
         System.Windows.Forms.Timer timer2 = new System.Windows.Forms.Timer();
         private bool isMinimized = false;
         private int seconds = 0;
         private IList<IList<object>> fetchedRows = new List<IList<object>>(); // To store the rows fetched from Google Sheets
         private Dictionary<string, List<string>> clientAssociations = new Dictionary<string, List<string>>();
         private Dictionary<string, List<string>> processedItems = new Dictionary<string, List<string>>();
+        STM_dbDataContext dbSTM = new STM_dbDataContext();
         public Monitor()
         {
             InitializeComponent();
@@ -38,6 +41,8 @@ namespace WindowsFormsApp2
 
         private void Monitor_Load(object sender, EventArgs e)
         {
+            // TODO: This line of code loads data into the 'dbqueueDataSet1.Clients' table. You can move, or remove it, as needed.
+            this.clientsTableAdapter.Fill(this.dbqueueDataSet1.Clients);
             ShowSTMOnSecondMonitor();
             //ShowForm1();
         }
@@ -53,7 +58,7 @@ namespace WindowsFormsApp2
                 var secondMonitor = Screen.AllScreens[1]; // Get the second monitor
                 if (stmForm == null || stmForm.IsDisposed)
                 {
-                    stmForm = new STM
+                    stmForm = new STM1
                     {
                         StartPosition = FormStartPosition.Manual, // Position manually
                         Location = secondMonitor.WorkingArea.Location // Set location to the second monitor
@@ -70,7 +75,7 @@ namespace WindowsFormsApp2
                 MessageBox.Show("Only one monitor detected. STM will open on the primary monitor.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 if (stmForm == null || stmForm.IsDisposed)
                 {
-                    stmForm = new STM();
+                    stmForm = new STM1();
                 }
                 stmForm.Show();
             }
@@ -101,7 +106,7 @@ namespace WindowsFormsApp2
                 });
 
                 // Define the range of data to fetch
-                var range = $"{SheetName}!A2:G1000"; // Adjust range as per your data
+                var range = $"{SheetName}!A2:H1000"; // Adjust range as per your data
                 var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
                 // Execute the request and fetch data
@@ -147,7 +152,7 @@ namespace WindowsFormsApp2
                     var query = "SELECT COUNT(*) FROM Clients WHERE ID=@ID";
                     using (var checkCmd = new SqlCommand(query, connection))
                     {
-                        checkCmd.Parameters.AddWithValue("ID", row[6]); // Assuming ClientID is in column A
+                        checkCmd.Parameters.AddWithValue("ID", row[7]); // Assuming ClientID is in column A
                         int count = (int)checkCmd.ExecuteScalar();
 
                         if (count > 0)
@@ -159,12 +164,13 @@ namespace WindowsFormsApp2
                         {
                             // Insert new record
                             query = @"
-                        INSERT INTO Clients (ID, ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus)
-                        VALUES (@ID, @ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus)";
+                        INSERT INTO Clients (ClientID, InvoiceNum, ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus, ID)
+                        VALUES (@ClientID,  @InvoiceNum, @ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus,@InvoiceNum,@ID)";
 
                             using (var insertCmd = new SqlCommand(query, connection))
                             {
-                                insertCmd.Parameters.AddWithValue("@ID", row[0]); // Assuming ID is in column A
+                                insertCmd.Parameters.AddWithValue("@ClientID", row[0]); // Assuming ID is in column A
+                                insertCmd.Parameters.AddWithValue("@InvoiceNum", row[6]);
                                 insertCmd.Parameters.AddWithValue("@ClientName", row[1]);
                                 insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[2]));
                                 insertCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
@@ -184,7 +190,7 @@ namespace WindowsFormsApp2
             }
         }
         
-        private void btnSend_Click(object qqsender, EventArgs e)
+        private void btnSend_Click(object sender, EventArgs e)
         {
             try
             {
@@ -195,18 +201,16 @@ namespace WindowsFormsApp2
                     DataGridViewRow selectedRow = DataGridView1.SelectedRows[0];
 
                     // Retrieve data from the selected row
-                    string ID = selectedRow.Cells["IDDataGridViewTextBoxColumn"].Value.ToString();
-                    string clientName = selectedRow.Cells["ClientNameDataGridViewTextBoxColumn"].Value.ToString();
-                    string transactionDate = selectedRow.Cells["TransactionDateDataGridViewTextBoxColumn"].Value.ToString();
-                    int queuePosition = Convert.ToInt32(selectedRow.Cells["QueuePositionDataGridViewTextBoxColumn"].Value);
-                    string requirementsStatus = selectedRow.Cells["RequirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
-                    string paymentStatus = selectedRow.Cells["PaymentStatusDataGridViewTextBoxColumn"].Value.ToString();
-
-
+                    int clientID = Convert.ToInt32 (selectedRow.Cells["ClientID"].Value);
+                    string invoiceNum = selectedRow.Cells["InvoiceNum"].Value.ToString();
+                    string clientName = selectedRow.Cells["ClientName"].Value.ToString();
+                    string transactionDate = selectedRow.Cells["TransactionDate"].Value.ToString();
+                    string requirementsStatus = selectedRow.Cells["RequirementsStatus"].Value.ToString();
+                    string paymentStatus = selectedRow.Cells["PaymentStatus"].Value.ToString();
 
                     if (paymentStatus == "Unpaid")
                     {
-                        MessageBox.Show("not yet paid","Cyrile", MessageBoxButtons.OK);
+                        MessageBox.Show("not yet paid", "Error", MessageBoxButtons.OK);
                     }
                     else
                     {
@@ -219,14 +223,13 @@ namespace WindowsFormsApp2
                             };
 
                             // Transfer data after restoring STM
-                            stmForm.AddRowToTable(clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus, ID);
+                            stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
                             timer.Tick += (s, args) =>
                             {
                                 timer.Stop();
                                 stmForm.WindowState = FormWindowState.Maximized;
 
                             };
-
                             timer.Start();
                         }
                         else
@@ -235,6 +238,29 @@ namespace WindowsFormsApp2
                         }
                         cmbClients.Items.Add(clientName);
                     }
+
+                    // Check if the record exists in the database
+                    using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
+                    {
+                        connection.Open();
+                        var query = "SELECT COUNT(*) FROM STM WHERE ClientID = @ClientID";
+                        using (var command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@ClientID", clientID);
+
+                            int recordCount = (int)command.ExecuteScalar();
+                            if (recordCount > 0)
+                            {
+                                MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return; // Stop further processing
+                            }
+                        }
+                    }
+
+                    dbSTM.STM_db(clientID, invoiceNum, clientName, Convert.ToDateTime(transactionDate) ,requirementsStatus, paymentStatus);
+
+
+                    
                     // Add the selected row's dqqata to the STM form
                     
 
@@ -248,7 +274,7 @@ namespace WindowsFormsApp2
                     Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
                     if (form1Instance != null)
                     {
-                        form1Instance.AddClientToComboBox(queuePosition, clientName);
+                        form1Instance.AddClientToComboBox(clientID, clientName);
                     }
                     else
                     {
@@ -262,7 +288,9 @@ namespace WindowsFormsApp2
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                cmbAA.Items.Add(ex.Message);
+                lblkann.Text = $"Error: {ex.Message}";
+                //MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -411,7 +439,7 @@ namespace WindowsFormsApp2
                     processedItems[selectedClient].Add(itemStr); // Add to processed items
                 }
             }
-
+                
             // Remove processed items from checkedListBox1 and clientAssociations
             for (int i = checkedListBox1.CheckedItems.Count - 1; i >= 0; i--)
             {
@@ -458,5 +486,11 @@ namespace WindowsFormsApp2
         {
 
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
+        }
+
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -12,10 +13,10 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 namespace WindowsFormsApp2
 {
 
-    public partial class STM : Form
+    public partial class STM1 : Form
     {
         private Dictionary<string, System.Windows.Forms.ProgressBar> clientProgressBars = new Dictionary<string, System.Windows.Forms.ProgressBar>();
-        public STM(/*int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus*/)
+        public STM1(/*int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus*/)
         {
             InitializeComponent();
 
@@ -30,13 +31,8 @@ namespace WindowsFormsApp2
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
         }
 
-        public void QueHere(string clientName,string Date,string Status,string paymentStatus,int ID)
-        {
 
-        }
-
-        
-        public void AddRowToTable(string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus, string ID)
+        public void AddRowToTable(int clientID, string invNum, string clientName, string transactionDate, string requirementsStatus, string paymentStatus)
         {
             // Define row index
             int rowIndex = tableLayoutPanel1.RowCount;
@@ -48,11 +44,10 @@ namespace WindowsFormsApp2
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             // Add controls (e.g., Labels) for each data point
-            tableLayoutPanel1.Controls.Add(new Label { Text = ID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
-            //tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = queuePosition.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = invNum.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
             Label requirementsLabel = new Label
             {
                 Text = requirementsStatus,

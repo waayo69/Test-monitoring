@@ -16,7 +16,7 @@ namespace WindowsFormsApp2
     public partial class Form1 : Form
     {
 
-        private STM stmForm; // Class-level reference to the STM form
+        private STM1 stmForm; // Class-level reference to the STM form
         public Form1()
         {
             InitializeComponent();

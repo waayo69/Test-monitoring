@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="STM_db">
+  <DataContextMoniker Name="/STM_dbDataContext" />
+  <nestedChildShapes>
+    <classShape Id="0177aa0b-3bd4-493c-a5b5-57f8acccc3be" absoluteBounds="1.75, 1.375, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/STM_dbDataContext/Client" />
+      <nestedChildShapes>
+        <elementListCompartment Id="61ef2828-4bee-4b5a-95bb-c06bc9878975" absoluteBounds="1.765, 1.835, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="acaa3ac0-eadf-4bdf-a7be-11f10f8d85ed" absoluteBounds="5.375, 1.25, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/STM_dbDataContext/STM" />
+      <nestedChildShapes>
+        <elementListCompartment Id="b2e0142c-b719-43c6-8a18-df0e931d63d5" absoluteBounds="5.39, 1.71, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(3.75 : 2.39024983723958); (5.375 : 2.39024983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/STM_dbDataContext/Client/Client_STM" />
+      <nodes>
+        <classShapeMoniker Id="0177aa0b-3bd4-493c-a5b5-57f8acccc3be" />
+        <classShapeMoniker Id="acaa3ac0-eadf-4bdf-a7be-11f10f8d85ed" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

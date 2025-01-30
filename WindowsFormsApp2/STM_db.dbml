@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="dbqueue" Class="STM_dbDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False;Trust Server Certificate=True" SettingsObjectName="WindowsFormsApp2.Properties.Settings" SettingsPropertyName="dbqueueConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Client">
+      <Column Name="ClientID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="TransactionDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="QueuePosition" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RequirementsStatus" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentStatus" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Client_STM" Member="STMs" ThisKey="ClientID" OtherKey="ClientID" Type="STM" />
+    </Type>
+  </Table>
+  <Table Name="dbo.STM" Member="STMs">
+    <Type Name="STM">
+      <Column Name="STMID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InvoiceNum" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="ClientName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="TransactionDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ReqStat" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PayStat" Type="System.String" DbType="VarChar(9) NOT NULL" CanBeNull="false" />
+      <Association Name="Client_STM" Member="Client" ThisKey="ClientID" OtherKey="ClientID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.STM_db" Method="STM_db">
+    <Parameter Name="ClientID" Parameter="clientID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="InvoiceNum" Parameter="invoiceNum" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ClientName" Parameter="clientName" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="TransactionDate" Parameter="transactionDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="ReqStat" Parameter="reqStat" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="PayStat" Parameter="payStat" Type="System.String" DbType="VarChar(9)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
