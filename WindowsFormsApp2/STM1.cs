@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace WindowsFormsApp2
         public STM1(/*int clientID, string clientName, string transactionDate, int queuePosition, string requirementsStatus, string paymentStatus*/)
         {
             InitializeComponent();
+            FetchDataFromSTMTable();
 
             //// Set the labels with the passed data
             //lblClientID.Text = clientID.ToString();
@@ -29,6 +31,41 @@ namespace WindowsFormsApp2
             //lblPaymentStatus.Text = paymentStatus;
 
             //UpdateLabels(clientID, clientName, transactionDate, queuePosition, requirementsStatus, paymentStatus);
+        }
+
+        private void FetchDataFromSTMTable()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM STMTable ORDER BY TransactionDate DESC"; // Fetch all records sorted by date
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int clientID = reader.GetInt32(0);
+                                string invoiceNum = reader.GetString(1);
+                                string clientName = reader.GetString(2);
+                                string transactionDate = reader.GetDateTime(3).ToString("yyyy-MM-dd");
+                                string requirementsStatus = reader.GetString(4);
+                                string paymentStatus = reader.GetString(5);
+
+                                // Add the row to the table
+                                AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
 
@@ -84,13 +121,7 @@ namespace WindowsFormsApp2
 
             
         }
-        public void EnableProgressBar(string clientName)
-        {
-            if (clientProgressBars.ContainsKey(clientName))
-            {
-                clientProgressBars[clientName].Enabled = true; // Enable the progress bar
-            }
-        }
+
         public void UpdateProgressBar(string clientName, double percentage)
         {
             if (clientProgressBars.ContainsKey(clientName) && clientProgressBars[clientName].Enabled)

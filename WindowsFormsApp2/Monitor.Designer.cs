@@ -40,6 +40,15 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.clientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.invoiceNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.transactionDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.requirementsStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.paymentStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clientsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.waayo69BindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.waayo69 = new WindowsFormsApp2.waayo69();
             this.cmbAA = new System.Windows.Forms.ComboBox();
             this.lblkann = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -58,24 +67,15 @@
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.lstHistory = new System.Windows.Forms.ListBox();
-            this.waayo69 = new WindowsFormsApp2.waayo69();
-            this.waayo69BindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.clientsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.clientsTableAdapter = new WindowsFormsApp2.waayo69TableAdapters.ClientsTableAdapter();
-            this.clientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.invoiceNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.transactionDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.requirementsStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.paymentStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSend
@@ -107,7 +107,6 @@
             this.lblTimer.Size = new System.Drawing.Size(44, 16);
             this.lblTimer.TabIndex = 3;
             this.lblTimer.Text = "label1";
-            this.lblTimer.Click += new System.EventHandler(this.lblTimer_Click);
             // 
             // lblMessage
             // 
@@ -209,6 +208,64 @@
             this.dataGridView1.Size = new System.Drawing.Size(1107, 150);
             this.dataGridView1.TabIndex = 10;
             // 
+            // clientIDDataGridViewTextBoxColumn
+            // 
+            this.clientIDDataGridViewTextBoxColumn.DataPropertyName = "ClientID";
+            this.clientIDDataGridViewTextBoxColumn.HeaderText = "ClientID";
+            this.clientIDDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.clientIDDataGridViewTextBoxColumn.Name = "clientIDDataGridViewTextBoxColumn";
+            this.clientIDDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // invoiceNumberDataGridViewTextBoxColumn
+            // 
+            this.invoiceNumberDataGridViewTextBoxColumn.DataPropertyName = "InvoiceNumber";
+            this.invoiceNumberDataGridViewTextBoxColumn.HeaderText = "InvoiceNumber";
+            this.invoiceNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.invoiceNumberDataGridViewTextBoxColumn.Name = "invoiceNumberDataGridViewTextBoxColumn";
+            // 
+            // clientNameDataGridViewTextBoxColumn
+            // 
+            this.clientNameDataGridViewTextBoxColumn.DataPropertyName = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.HeaderText = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.clientNameDataGridViewTextBoxColumn.Name = "clientNameDataGridViewTextBoxColumn";
+            // 
+            // transactionDateDataGridViewTextBoxColumn
+            // 
+            this.transactionDateDataGridViewTextBoxColumn.DataPropertyName = "TransactionDate";
+            this.transactionDateDataGridViewTextBoxColumn.HeaderText = "TransactionDate";
+            this.transactionDateDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.transactionDateDataGridViewTextBoxColumn.Name = "transactionDateDataGridViewTextBoxColumn";
+            // 
+            // requirementsStatusDataGridViewTextBoxColumn
+            // 
+            this.requirementsStatusDataGridViewTextBoxColumn.DataPropertyName = "RequirementsStatus";
+            this.requirementsStatusDataGridViewTextBoxColumn.HeaderText = "RequirementsStatus";
+            this.requirementsStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.requirementsStatusDataGridViewTextBoxColumn.Name = "requirementsStatusDataGridViewTextBoxColumn";
+            // 
+            // paymentStatusDataGridViewTextBoxColumn
+            // 
+            this.paymentStatusDataGridViewTextBoxColumn.DataPropertyName = "PaymentStatus";
+            this.paymentStatusDataGridViewTextBoxColumn.HeaderText = "PaymentStatus";
+            this.paymentStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.paymentStatusDataGridViewTextBoxColumn.Name = "paymentStatusDataGridViewTextBoxColumn";
+            // 
+            // clientsBindingSource
+            // 
+            this.clientsBindingSource.DataMember = "Clients";
+            this.clientsBindingSource.DataSource = this.waayo69BindingSource;
+            // 
+            // waayo69BindingSource
+            // 
+            this.waayo69BindingSource.DataSource = this.waayo69;
+            this.waayo69BindingSource.Position = 0;
+            // 
+            // waayo69
+            // 
+            this.waayo69.DataSetName = "waayo69";
+            this.waayo69.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // cmbAA
             // 
             this.cmbAA.FormattingEnabled = true;
@@ -286,7 +343,6 @@
             this.lblPercent.Size = new System.Drawing.Size(53, 16);
             this.lblPercent.TabIndex = 27;
             this.lblPercent.Text = "Percent";
-            this.lblPercent.Click += new System.EventHandler(this.lblPercent_Click);
             // 
             // btnProcessed
             // 
@@ -430,67 +486,9 @@
             this.lstHistory.Size = new System.Drawing.Size(1151, 484);
             this.lstHistory.TabIndex = 0;
             // 
-            // waayo69
-            // 
-            this.waayo69.DataSetName = "waayo69";
-            this.waayo69.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // waayo69BindingSource
-            // 
-            this.waayo69BindingSource.DataSource = this.waayo69;
-            this.waayo69BindingSource.Position = 0;
-            // 
-            // clientsBindingSource
-            // 
-            this.clientsBindingSource.DataMember = "Clients";
-            this.clientsBindingSource.DataSource = this.waayo69BindingSource;
-            // 
             // clientsTableAdapter
             // 
             this.clientsTableAdapter.ClearBeforeFill = true;
-            // 
-            // clientIDDataGridViewTextBoxColumn
-            // 
-            this.clientIDDataGridViewTextBoxColumn.DataPropertyName = "ClientID";
-            this.clientIDDataGridViewTextBoxColumn.HeaderText = "ClientID";
-            this.clientIDDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.clientIDDataGridViewTextBoxColumn.Name = "clientIDDataGridViewTextBoxColumn";
-            this.clientIDDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // invoiceNumberDataGridViewTextBoxColumn
-            // 
-            this.invoiceNumberDataGridViewTextBoxColumn.DataPropertyName = "InvoiceNumber";
-            this.invoiceNumberDataGridViewTextBoxColumn.HeaderText = "InvoiceNumber";
-            this.invoiceNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.invoiceNumberDataGridViewTextBoxColumn.Name = "invoiceNumberDataGridViewTextBoxColumn";
-            // 
-            // clientNameDataGridViewTextBoxColumn
-            // 
-            this.clientNameDataGridViewTextBoxColumn.DataPropertyName = "ClientName";
-            this.clientNameDataGridViewTextBoxColumn.HeaderText = "ClientName";
-            this.clientNameDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.clientNameDataGridViewTextBoxColumn.Name = "clientNameDataGridViewTextBoxColumn";
-            // 
-            // transactionDateDataGridViewTextBoxColumn
-            // 
-            this.transactionDateDataGridViewTextBoxColumn.DataPropertyName = "TransactionDate";
-            this.transactionDateDataGridViewTextBoxColumn.HeaderText = "TransactionDate";
-            this.transactionDateDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.transactionDateDataGridViewTextBoxColumn.Name = "transactionDateDataGridViewTextBoxColumn";
-            // 
-            // requirementsStatusDataGridViewTextBoxColumn
-            // 
-            this.requirementsStatusDataGridViewTextBoxColumn.DataPropertyName = "RequirementsStatus";
-            this.requirementsStatusDataGridViewTextBoxColumn.HeaderText = "RequirementsStatus";
-            this.requirementsStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.requirementsStatusDataGridViewTextBoxColumn.Name = "requirementsStatusDataGridViewTextBoxColumn";
-            // 
-            // paymentStatusDataGridViewTextBoxColumn
-            // 
-            this.paymentStatusDataGridViewTextBoxColumn.DataPropertyName = "PaymentStatus";
-            this.paymentStatusDataGridViewTextBoxColumn.HeaderText = "PaymentStatus";
-            this.paymentStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.paymentStatusDataGridViewTextBoxColumn.Name = "paymentStatusDataGridViewTextBoxColumn";
             // 
             // Monitor
             // 
@@ -506,12 +504,12 @@
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

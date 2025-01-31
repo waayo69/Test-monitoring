@@ -46,11 +46,6 @@ namespace WindowsFormsApp2
             ShowSTMOnSecondMonitor();
             //ShowForm1();
         }
-        private void ShowForm1()
-        {
-            Form1 form1 = new Form1();
-            form1.Show();
-        }
         private void ShowSTMOnSecondMonitor()
         {
             if (Screen.AllScreens.Length > 1) // Check if there are multiple monitors
@@ -193,62 +188,6 @@ namespace WindowsFormsApp2
                 MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-        private void UpdateSTMDatabase(IList<object> row)
-        {
-            try
-            {
-                // Establish a connection to the SQL Server database
-                using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
-                {
-                    connection.Open();
-
-                    // Check if the record exists
-                    var query = "SELECT COUNT(*) FROM STMTable WHERE ClientID=@ClientID";
-                    using (var checkCmd = new SqlCommand(query, connection))
-                    {
-                        checkCmd.Parameters.AddWithValue("ClientID", row[0]); // Assuming ClientID is in column A
-                        int count = (int)checkCmd.ExecuteScalar();
-
-                        if (count > 0)
-                        {
-                            // Skip the existing record
-                            return;
-                        }
-                        else
-                        {
-
-                            // Insert new record
-                            query = @"
-                                    IF NOT EXISTS (SELECT 1 FROM Clients WHERE InvoiceNumber = @InvoiceNumber)
-                                    BEGIN
-                                        INSERT INTO Clients (InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus)
-                                        VALUES (@InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)
-                                    END";
-
-
-                            using (var insertCmd = new SqlCommand(query, connection))
-                            {
-                                insertCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]); // Assuming invNum is in column A
-                                insertCmd.Parameters.AddWithValue("@ClientName", row[2]);
-                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[3]));
-                                insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
-                                insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
-                                insertCmd.ExecuteNonQuery();
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-
-
         private void btnSend_Click(object sender, EventArgs e)
         {
             try
@@ -323,8 +262,8 @@ namespace WindowsFormsApp2
 
                         // Insert Data into STMTable
                         string insertQuery = @"
-                    INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
-                    VALUES (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)";
+                                            INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
+                                            VALUES (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)";
 
                         using (var insertCommand = new SqlCommand(insertQuery, connection))
                         {
@@ -343,13 +282,6 @@ namespace WindowsFormsApp2
 
                     // Update ComboBox with Client Name
                     cmbClients.Items.Add(clientName);
-
-                    // Dynamically update other forms
-                    Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
-                    if (form1Instance != null)
-                    {
-                        form1Instance.AddClientToComboBox(clientID, clientName);
-                    }
                 }
                 else
                 {
@@ -561,11 +493,6 @@ namespace WindowsFormsApp2
         private void button2_Click(object sender, EventArgs e)
         {
             
-        }
-
-        private void clientsBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
