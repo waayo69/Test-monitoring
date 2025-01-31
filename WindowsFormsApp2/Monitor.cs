@@ -236,8 +236,6 @@ namespace WindowsFormsApp2
                                 insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
                                 insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
                                 insertCmd.ExecuteNonQuery();
-                                // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
-                                this.clientsTableAdapter.Fill(this.waayo69.Clients);
                             }
                         }
                     }
@@ -261,78 +259,96 @@ namespace WindowsFormsApp2
                     // Access the first selected row
                     DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
-                    // Retrieve data from the selected row
-                    int clientID = Convert.ToInt32 (selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
-                    string invoiceNum = selectedRow.Cells["invoiceNumberDataGridViewTextBoxColumn"].Value.ToString();
-                    string clientName = selectedRow.Cells["clientNameDataGridViewTextBoxColumn"].Value.ToString();
-                    string transactionDate = selectedRow.Cells["transactionDateDataGridViewTextBoxColumn"].Value.ToString();
-                    string requirementsStatus = selectedRow.Cells["requirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
-                    string paymentStatus = selectedRow.Cells["paymentStatusDataGridViewTextBoxColumn"].Value.ToString();
+                    // Retrieve data from the selected row, handling NULL values
+                    int clientID = selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value != DBNull.Value
+                        ? Convert.ToInt32(selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value)
+                        : 0; // Default if NULL
 
+                    string invoiceNum = selectedRow.Cells["invoiceNumberDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
+                    string clientName = selectedRow.Cells["clientNameDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
+                    string transactionDate = selectedRow.Cells["transactionDateDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
+                    string requirementsStatus = selectedRow.Cells["requirementsStatusDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
+                    string paymentStatus = selectedRow.Cells["paymentStatusDataGridViewTextBoxColumn"].Value?.ToString() ?? "";
+
+                    // Check if the client has paid before proceeding
                     if (paymentStatus == "Unpaid")
                     {
-                        MessageBox.Show("not yet paid", "Error", MessageBoxButtons.OK);
+                        MessageBox.Show("Client has not yet paid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Minimize and restore STM Form (if open)
+                    if (stmForm != null && !stmForm.IsDisposed)
+                    {
+                        stmForm.WindowState = FormWindowState.Minimized;
+                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+                        {
+                            Interval = 10 // Short delay before restoring
+                        };
+
+                        // Add data to STM Form
+                        stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
+                        timer.Tick += (s, args) =>
+                        {
+                            timer.Stop();
+                            stmForm.WindowState = FormWindowState.Maximized;
+                        };
+                        timer.Start();
                     }
                     else
                     {
-                        if (stmForm != null && !stmForm.IsDisposed)
-                        {
-                            stmForm.WindowState = FormWindowState.Minimized;
-                            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
-                            {
-                                Interval = 10 // 1 second delay
-                            };
-
-                            // Transfer data after restoring STM
-                            stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
-                            timer.Tick += (s, args) =>
-                            {
-                                timer.Stop();
-                                stmForm.WindowState = FormWindowState.Maximized;
-
-                            };
-                            timer.Start();
-                            // Check if the record exists in the database
-                            using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
-                            {
-                                connection.Open();
-                                var query = "SELECT COUNT(*) FROM STMTable WHERE ClientID = @ClientID";
-                                using (var command = new SqlCommand(query, connection))
-                                {
-                                    command.Parameters.AddWithValue("@ClientID", clientID);
-
-                                    int recordCount = (int)command.ExecuteScalar();
-                                    if (recordCount > 0)
-                                    {
-                                        MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                        return; // Stop further processing
-                                    }
-                                }
-                            }
-                            // Add the selected row's dqqata to the STM form
-                            dbSTM.STM_db(clientID, invoiceNum, clientName, Convert.ToDateTime(transactionDate), requirementsStatus, paymentStatus);
-
-                        }
-                        else
-                        {
-                            MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        cmbClients.Items.Add(clientName);
+                        MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
-                    
-                    // Update the percentage dynamically
 
+                    // Database Connection & Insert Logic
+                    using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
+                    {
+                        connection.Open();
 
+                        // Check if the record already exists (ClientID & InvoiceNumber)
+                        string checkQuery = "SELECT COUNT(*) FROM STMTable WHERE ClientID = @ClientID AND InvoiceNumber = @InvoiceNumber";
+                        using (var checkCommand = new SqlCommand(checkQuery, connection))
+                        {
+                            checkCommand.Parameters.AddWithValue("@ClientID", clientID);
+                            checkCommand.Parameters.AddWithValue("@InvoiceNumber", invoiceNum);
 
+                            int recordCount = (int)checkCommand.ExecuteScalar();
+                            if (recordCount > 0)
+                            {
+                                MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return; // Stop further processing
+                            }
+                        }
 
+                        // Insert Data into STMTable
+                        string insertQuery = @"
+                    INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
+                    VALUES (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)";
+
+                        using (var insertCommand = new SqlCommand(insertQuery, connection))
+                        {
+                            insertCommand.Parameters.AddWithValue("@ClientID", clientID);
+                            insertCommand.Parameters.AddWithValue("@InvoiceNumber", invoiceNum);
+                            insertCommand.Parameters.AddWithValue("@ClientName", clientName);
+                            insertCommand.Parameters.AddWithValue("@TransactionDate", string.IsNullOrEmpty(transactionDate) ? (object)DBNull.Value : DateTime.Parse(transactionDate));
+                            insertCommand.Parameters.AddWithValue("@RequirementsStatus", requirementsStatus);
+                            insertCommand.Parameters.AddWithValue("@PaymentStatus", paymentStatus);
+
+                            insertCommand.ExecuteNonQuery();
+                        }
+
+                        MessageBox.Show("Record successfully added to the database!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    // Update ComboBox with Client Name
+                    cmbClients.Items.Add(clientName);
+
+                    // Dynamically update other forms
                     Form1 form1Instance = Application.OpenForms.OfType<Form1>().FirstOrDefault();
                     if (form1Instance != null)
                     {
                         form1Instance.AddClientToComboBox(clientID, clientName);
-                    }
-                    else
-                    {
-                        //MessageBox.Show("Form1 is not currently open.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
@@ -342,12 +358,13 @@ namespace WindowsFormsApp2
             }
             catch (Exception ex)
             {
+                // Display error message
                 cmbAA.Items.Add(ex.Message);
                 lblkann.Text = $"Error: {ex.Message}";
-                //MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
+
 
         private void UpdateProcessedPercentage()
         {
