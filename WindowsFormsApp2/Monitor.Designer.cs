@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnSend = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblTimer = new System.Windows.Forms.Label();
@@ -81,7 +81,7 @@
             // btnSend
             // 
             this.btnSend.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnSend.Location = new System.Drawing.Point(786, 400);
+            this.btnSend.Location = new System.Drawing.Point(811, 256);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(171, 52);
             this.btnSend.TabIndex = 1;
@@ -91,7 +91,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(97, 400);
+            this.button1.Location = new System.Drawing.Point(122, 256);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(181, 52);
             this.button1.TabIndex = 2;
@@ -102,7 +102,7 @@
             // lblTimer
             // 
             this.lblTimer.AutoSize = true;
-            this.lblTimer.Location = new System.Drawing.Point(164, 372);
+            this.lblTimer.Location = new System.Drawing.Point(189, 228);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(44, 16);
             this.lblTimer.TabIndex = 3;
@@ -111,7 +111,7 @@
             // lblMessage
             // 
             this.lblMessage.AutoSize = true;
-            this.lblMessage.Location = new System.Drawing.Point(351, 418);
+            this.lblMessage.Location = new System.Drawing.Point(376, 274);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(83, 16);
             this.lblMessage.TabIndex = 4;
@@ -120,7 +120,7 @@
             // lblkani
             // 
             this.lblkani.AutoSize = true;
-            this.lblkani.Location = new System.Drawing.Point(351, 449);
+            this.lblkani.Location = new System.Drawing.Point(376, 305);
             this.lblkani.Name = "lblkani";
             this.lblkani.Size = new System.Drawing.Size(44, 16);
             this.lblkani.TabIndex = 5;
@@ -128,7 +128,7 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Left;
+            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
@@ -139,12 +139,13 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(10, 20);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1214, 539);
+            this.tabControl1.Size = new System.Drawing.Size(1232, 486);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage1
             // 
+            this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.cmbAA);
             this.tabPage1.Controls.Add(this.lblkann);
@@ -153,12 +154,12 @@
             this.tabPage1.Controls.Add(this.lblMessage);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.lblTimer);
-            this.tabPage1.Location = new System.Drawing.Point(59, 4);
+            this.tabPage1.Location = new System.Drawing.Point(4, 62);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1151, 531);
+            this.tabPage1.Size = new System.Drawing.Size(1224, 420);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Finance";
+            this.tabPage1.Text = " ";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
@@ -167,21 +168,21 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clientIDDataGridViewTextBoxColumn,
@@ -191,21 +192,21 @@
             this.requirementsStatusDataGridViewTextBoxColumn,
             this.paymentStatusDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.clientsBindingSource;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridView1.Location = new System.Drawing.Point(26, 45);
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dataGridView1.Location = new System.Drawing.Point(-2, -2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.RowTemplate.ReadOnly = true;
             this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.Size = new System.Drawing.Size(1107, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(1224, 150);
             this.dataGridView1.TabIndex = 10;
             // 
             // clientIDDataGridViewTextBoxColumn
@@ -269,7 +270,7 @@
             // cmbAA
             // 
             this.cmbAA.FormattingEnabled = true;
-            this.cmbAA.Location = new System.Drawing.Point(773, 494);
+            this.cmbAA.Location = new System.Drawing.Point(798, 350);
             this.cmbAA.Name = "cmbAA";
             this.cmbAA.Size = new System.Drawing.Size(254, 24);
             this.cmbAA.TabIndex = 7;
@@ -277,7 +278,7 @@
             // lblkann
             // 
             this.lblkann.AutoSize = true;
-            this.lblkann.Location = new System.Drawing.Point(94, 471);
+            this.lblkann.Location = new System.Drawing.Point(119, 327);
             this.lblkann.Name = "lblkann";
             this.lblkann.Size = new System.Drawing.Size(44, 16);
             this.lblkann.TabIndex = 6;
@@ -285,6 +286,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage2.Controls.Add(this.btnRemoveFromClient);
             this.tabPage2.Controls.Add(this.btnAddToClient);
             this.tabPage2.Controls.Add(this.cmbClients);
@@ -298,18 +300,18 @@
             this.tabPage2.Controls.Add(this.lblSelectedValue);
             this.tabPage2.Controls.Add(this.comboBoxItems);
             this.tabPage2.Controls.Add(this.checkedListBox1);
-            this.tabPage2.Location = new System.Drawing.Point(59, 4);
+            this.tabPage2.Location = new System.Drawing.Point(4, 62);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1151, 531);
+            this.tabPage2.Size = new System.Drawing.Size(1224, 420);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Clients";
+            this.tabPage2.Text = "Planning";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // btnRemoveFromClient
             // 
-            this.btnRemoveFromClient.Location = new System.Drawing.Point(296, 349);
+            this.btnRemoveFromClient.Location = new System.Drawing.Point(315, 348);
             this.btnRemoveFromClient.Name = "btnRemoveFromClient";
             this.btnRemoveFromClient.Size = new System.Drawing.Size(141, 40);
             this.btnRemoveFromClient.TabIndex = 30;
@@ -318,7 +320,7 @@
             // 
             // btnAddToClient
             // 
-            this.btnAddToClient.Location = new System.Drawing.Point(126, 349);
+            this.btnAddToClient.Location = new System.Drawing.Point(145, 348);
             this.btnAddToClient.Name = "btnAddToClient";
             this.btnAddToClient.Size = new System.Drawing.Size(141, 41);
             this.btnAddToClient.TabIndex = 29;
@@ -329,7 +331,7 @@
             // cmbClients
             // 
             this.cmbClients.FormattingEnabled = true;
-            this.cmbClients.Location = new System.Drawing.Point(11, 31);
+            this.cmbClients.Location = new System.Drawing.Point(30, 30);
             this.cmbClients.Name = "cmbClients";
             this.cmbClients.Size = new System.Drawing.Size(423, 24);
             this.cmbClients.TabIndex = 28;
@@ -338,7 +340,7 @@
             // lblPercent
             // 
             this.lblPercent.AutoSize = true;
-            this.lblPercent.Location = new System.Drawing.Point(615, 80);
+            this.lblPercent.Location = new System.Drawing.Point(634, 79);
             this.lblPercent.Name = "lblPercent";
             this.lblPercent.Size = new System.Drawing.Size(53, 16);
             this.lblPercent.TabIndex = 27;
@@ -346,7 +348,7 @@
             // 
             // btnProcessed
             // 
-            this.btnProcessed.Location = new System.Drawing.Point(496, 349);
+            this.btnProcessed.Location = new System.Drawing.Point(515, 348);
             this.btnProcessed.Name = "btnProcessed";
             this.btnProcessed.Size = new System.Drawing.Size(141, 40);
             this.btnProcessed.TabIndex = 26;
@@ -357,7 +359,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(458, 118);
+            this.label1.Location = new System.Drawing.Point(477, 117);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 16);
             this.label1.TabIndex = 25;
@@ -367,7 +369,7 @@
             // 
             this.checkedListBox2.CheckOnClick = true;
             this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(451, 138);
+            this.checkedListBox2.Location = new System.Drawing.Point(470, 137);
             this.checkedListBox2.Margin = new System.Windows.Forms.Padding(4);
             this.checkedListBox2.Name = "checkedListBox2";
             this.checkedListBox2.Size = new System.Drawing.Size(423, 123);
@@ -375,7 +377,7 @@
             // 
             // btnDone
             // 
-            this.btnDone.Location = new System.Drawing.Point(696, 349);
+            this.btnDone.Location = new System.Drawing.Point(715, 348);
             this.btnDone.Name = "btnDone";
             this.btnDone.Size = new System.Drawing.Size(141, 40);
             this.btnDone.TabIndex = 23;
@@ -386,7 +388,7 @@
             // radioButtonDeselect
             // 
             this.radioButtonDeselect.AutoSize = true;
-            this.radioButtonDeselect.Location = new System.Drawing.Point(114, 110);
+            this.radioButtonDeselect.Location = new System.Drawing.Point(133, 109);
             this.radioButtonDeselect.Name = "radioButtonDeselect";
             this.radioButtonDeselect.Size = new System.Drawing.Size(99, 20);
             this.radioButtonDeselect.TabIndex = 22;
@@ -398,7 +400,7 @@
             // radioButtonSelectAll
             // 
             this.radioButtonSelectAll.AutoSize = true;
-            this.radioButtonSelectAll.Location = new System.Drawing.Point(11, 110);
+            this.radioButtonSelectAll.Location = new System.Drawing.Point(30, 109);
             this.radioButtonSelectAll.Name = "radioButtonSelectAll";
             this.radioButtonSelectAll.Size = new System.Drawing.Size(83, 20);
             this.radioButtonSelectAll.TabIndex = 21;
@@ -410,7 +412,7 @@
             // lblSelectedValue
             // 
             this.lblSelectedValue.AutoSize = true;
-            this.lblSelectedValue.Location = new System.Drawing.Point(458, 34);
+            this.lblSelectedValue.Location = new System.Drawing.Point(477, 33);
             this.lblSelectedValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblSelectedValue.Name = "lblSelectedValue";
             this.lblSelectedValue.Size = new System.Drawing.Size(44, 16);
@@ -449,7 +451,7 @@
             "Senior Citizen ID",
             "Solo Parent ID",
             "SSS ID"});
-            this.comboBoxItems.Location = new System.Drawing.Point(11, 80);
+            this.comboBoxItems.Location = new System.Drawing.Point(30, 79);
             this.comboBoxItems.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxItems.Name = "comboBoxItems";
             this.comboBoxItems.Size = new System.Drawing.Size(423, 24);
@@ -460,7 +462,7 @@
             // 
             this.checkedListBox1.CheckOnClick = true;
             this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(11, 137);
+            this.checkedListBox1.Location = new System.Drawing.Point(30, 136);
             this.checkedListBox1.Margin = new System.Windows.Forms.Padding(4);
             this.checkedListBox1.Name = "checkedListBox1";
             this.checkedListBox1.Size = new System.Drawing.Size(423, 174);
@@ -468,22 +470,24 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.tabPage3.Controls.Add(this.lstHistory);
-            this.tabPage3.Location = new System.Drawing.Point(59, 4);
+            this.tabPage3.Location = new System.Drawing.Point(4, 62);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1151, 531);
+            this.tabPage3.Size = new System.Drawing.Size(1224, 420);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "History";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // lstHistory
             // 
+            this.lstHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstHistory.FormattingEnabled = true;
             this.lstHistory.ItemHeight = 16;
-            this.lstHistory.Location = new System.Drawing.Point(0, 0);
+            this.lstHistory.Location = new System.Drawing.Point(3, 3);
             this.lstHistory.Name = "lstHistory";
-            this.lstHistory.Size = new System.Drawing.Size(1151, 484);
+            this.lstHistory.Size = new System.Drawing.Size(1214, 410);
             this.lstHistory.TabIndex = 0;
             // 
             // clientsTableAdapter
@@ -494,7 +498,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1214, 539);
+            this.ClientSize = new System.Drawing.Size(1232, 486);
             this.Controls.Add(this.tabControl1);
             this.Name = "Monitor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
