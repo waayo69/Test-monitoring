@@ -373,15 +373,15 @@ namespace WindowsFormsApp2
         //            totalItems += processedItemsCount;
         //        }
 
-            if (totalItems > 0)
-            {
-                double percentage = (double)processedItemsCount / totalItems * 100;
-                lblPercent.Text = $"Processed: {percentage:F2}%";
-            }
-            else
-            {
-                lblPercent.Text = "Processed: 0%";
-            }
+            //if (totalItems > 0)
+            //{
+            //    double percentage = (double)processedItemsCount / totalItems * 100;
+            //    lblPercent.Text = $"Processed: {percentage:F2}%";
+            //}
+            //else
+            //{
+            //    lblPercent.Text = "Processed: 0%";
+            //}
         }
     }
 }

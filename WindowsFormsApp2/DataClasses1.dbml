@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="MonitorTest2" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(localdb)\LocalDB;Initial Catalog=MonitorTest2;Integrated Security=True" SettingsObjectName="WindowsFormsApp2.Properties.Settings" SettingsPropertyName="MonitorTest2ConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Client">
+      <Column Name="ClientID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ClientName" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="TransactionDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="QueuePosition" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RequirementsStatus" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PaymentStatus" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Association Name="Client_STMTable" Member="STMTables" ThisKey="ClientID" OtherKey="ClientID" Type="STMTable" />
+      <Association Name="Client_Processed" Member="Processeds" ThisKey="ClientID" OtherKey="ClientID" Type="Processed" />
+    </Type>
+  </Table>
+  <Table Name="dbo.STMTable" Member="STMTables">
+    <Type Name="STMTable">
+      <Column Name="QueueID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="InvoiceNumber" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="ClientName" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="TransactionDate" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="RequirementsStatus" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Column Name="PaymentStatus" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Association Name="Client_STMTable" Member="Client" ThisKey="ClientID" OtherKey="ClientID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Processed" Member="Processeds">
+    <Type Name="Processed">
+      <Column Name="ProcessedID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClientID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClientName" Type="System.String" DbType="VarChar(30)" CanBeNull="true" />
+      <Association Name="Client_Processed" Member="Client" ThisKey="ClientID" OtherKey="ClientID" Type="Client" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.StoreSTM" Method="StoreSTM">
+    <Parameter Name="ClientID" Parameter="clientID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="InvoiceNumber" Parameter="invoiceNumber" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="ClientName" Parameter="clientName" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="TransactionDate" Parameter="transactionDate" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="RequirementsStatus" Parameter="requirementsStatus" Type="System.String" DbType="VarChar(30)" />
+    <Parameter Name="PaymentStatus" Parameter="paymentStatus" Type="System.String" DbType="VarChar(30)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
