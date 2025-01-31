@@ -44,5 +44,17 @@ namespace WindowsFormsApp2.Properties {
                 return ((string)(this["dbqueueConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=sql.bsite.net\\MSSQL2016;Initial Catalog=waayo69_Clients;Persist Secur" +
+            "ity Info=True;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False;TrustSer" +
+            "verCertificate=True")]
+        public string waayo69_Clients {
+            get {
+                return ((string)(this["waayo69_Clients"]));
+            }
+        }
     }
 }

@@ -49,11 +49,6 @@
             this.processedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bastaBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bastaKani = new WindowsFormsApp2.bastaKani();
-            this.bastaTableAdapter = new WindowsFormsApp2.bastaKaniTableAdapters.BastaTableAdapter();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bastaBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bastaKani)).BeginInit();
             this.SuspendLayout();
             // 
             // checkedListBox1
@@ -276,20 +271,6 @@
             this.clientNameDataGridViewTextBoxColumn.Name = "clientNameDataGridViewTextBoxColumn";
             this.clientNameDataGridViewTextBoxColumn.Width = 125;
             // 
-            // bastaBindingSource
-            // 
-            this.bastaBindingSource.DataMember = "Basta";
-            this.bastaBindingSource.DataSource = this.bastaKani;
-            // 
-            // bastaKani
-            // 
-            this.bastaKani.DataSetName = "bastaKani";
-            this.bastaKani.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // bastaTableAdapter
-            // 
-            this.bastaTableAdapter.ClearBeforeFill = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -316,9 +297,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Planning";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bastaBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.bastaKani)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,9 +320,7 @@
         private System.Windows.Forms.Button btnAddToClient;
         private System.Windows.Forms.Button btnRemoveFromClient;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private bastaKani bastaKani;
         private System.Windows.Forms.BindingSource bastaBindingSource;
-        private bastaKaniTableAdapters.BastaTableAdapter bastaTableAdapter;
         private System.Windows.Forms.DataGridViewTextBoxColumn iDDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn processedDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn clientNameDataGridViewTextBoxColumn;

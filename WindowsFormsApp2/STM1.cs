@@ -32,7 +32,7 @@ namespace WindowsFormsApp2
         }
 
 
-        public void AddRowToTable(int clientID, string invNum, string clientName, string transactionDate, string requirementsStatus, string paymentStatus)
+        public void AddRowToTable(int clientID, string invoiceNum, string clientName, string transactionDate, string requirementsStatus, string paymentStatus)
         {
             // Define row index
             int rowIndex = tableLayoutPanel1.RowCount;
@@ -45,7 +45,7 @@ namespace WindowsFormsApp2
 
             // Add controls (e.g., Labels) for each data point
             tableLayoutPanel1.Controls.Add(new Label { Text = clientID.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 0, rowIndex);
-            tableLayoutPanel1.Controls.Add(new Label { Text = invNum.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
+            tableLayoutPanel1.Controls.Add(new Label { Text = invoiceNum.ToString(), AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 1, rowIndex);
             tableLayoutPanel1.Controls.Add(new Label { Text = clientName, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 2, rowIndex);
             tableLayoutPanel1.Controls.Add(new Label { Text = transactionDate, AutoSize = true, TextAlign = ContentAlignment.MiddleCenter, Dock = DockStyle.Fill }, 3, rowIndex);
             Label requirementsLabel = new Label

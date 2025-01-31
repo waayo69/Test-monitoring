@@ -29,17 +29,19 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.DataGridView1 = new System.Windows.Forms.DataGridView();
-            this.clientsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dbqueueDataSet3 = new WindowsFormsApp2.dbqueueDataSet3();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnSend = new System.Windows.Forms.Button();
-            this.clientsTableAdapter1 = new WindowsFormsApp2.dbqueueDataSet3TableAdapters.ClientsTableAdapter();
             this.button1 = new System.Windows.Forms.Button();
             this.lblTimer = new System.Windows.Forms.Label();
             this.lblMessage = new System.Windows.Forms.Label();
             this.lblkani = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cmbAA = new System.Windows.Forms.ComboBox();
+            this.lblkann = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnRemoveFromClient = new System.Windows.Forms.Button();
             this.btnAddToClient = new System.Windows.Forms.Button();
@@ -56,70 +58,30 @@
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.lstHistory = new System.Windows.Forms.ListBox();
-            this.ClientID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.InvoiceNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ClientName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TransactionDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.QueuePosition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.RequirementsStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PaymentStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dbqueueDataSet1 = new WindowsFormsApp2.dbqueueDataSet1();
+            this.waayo69 = new WindowsFormsApp2.waayo69();
+            this.waayo69BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.clientsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.clientsTableAdapter = new WindowsFormsApp2.dbqueueDataSet1TableAdapters.ClientsTableAdapter();
-            this.lblkann = new System.Windows.Forms.Label();
-            this.cmbAA = new System.Windows.Forms.ComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).BeginInit();
+            this.clientsTableAdapter = new WindowsFormsApp2.waayo69TableAdapters.ClientsTableAdapter();
+            this.clientIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.invoiceNumberDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.clientNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.transactionDateDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.requirementsStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.paymentStatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).BeginInit();
             this.SuspendLayout();
-            // 
-            // DataGridView1
-            // 
-            this.DataGridView1.AllowUserToResizeColumns = false;
-            this.DataGridView1.AllowUserToResizeRows = false;
-            this.DataGridView1.AutoGenerateColumns = false;
-            this.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ClientID,
-            this.InvoiceNum,
-            this.ClientName,
-            this.TransactionDate,
-            this.QueuePosition,
-            this.RequirementsStatus,
-            this.PaymentStatus,
-            this.ID});
-            this.DataGridView1.DataSource = this.clientsBindingSource;
-            this.DataGridView1.Location = new System.Drawing.Point(0, 3);
-            this.DataGridView1.Name = "DataGridView1";
-            this.DataGridView1.RowHeadersWidth = 51;
-            this.DataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.DataGridView1.RowTemplate.Height = 24;
-            this.DataGridView1.Size = new System.Drawing.Size(1148, 269);
-            this.DataGridView1.TabIndex = 0;
-            // 
-            // clientsBindingSource1
-            // 
-            this.clientsBindingSource1.DataMember = "Clients";
-            this.clientsBindingSource1.DataSource = this.dbqueueDataSet3;
-            // 
-            // dbqueueDataSet3
-            // 
-            this.dbqueueDataSet3.DataSetName = "dbqueueDataSet3";
-            this.dbqueueDataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // btnSend
             // 
             this.btnSend.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.btnSend.Location = new System.Drawing.Point(772, 342);
+            this.btnSend.Location = new System.Drawing.Point(786, 400);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(171, 52);
             this.btnSend.TabIndex = 1;
@@ -127,13 +89,9 @@
             this.btnSend.UseVisualStyleBackColor = false;
             this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
             // 
-            // clientsTableAdapter1
-            // 
-            this.clientsTableAdapter1.ClearBeforeFill = true;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(83, 342);
+            this.button1.Location = new System.Drawing.Point(97, 400);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(181, 52);
             this.button1.TabIndex = 2;
@@ -144,7 +102,7 @@
             // lblTimer
             // 
             this.lblTimer.AutoSize = true;
-            this.lblTimer.Location = new System.Drawing.Point(150, 314);
+            this.lblTimer.Location = new System.Drawing.Point(164, 372);
             this.lblTimer.Name = "lblTimer";
             this.lblTimer.Size = new System.Drawing.Size(44, 16);
             this.lblTimer.TabIndex = 3;
@@ -154,7 +112,7 @@
             // lblMessage
             // 
             this.lblMessage.AutoSize = true;
-            this.lblMessage.Location = new System.Drawing.Point(337, 360);
+            this.lblMessage.Location = new System.Drawing.Point(351, 418);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(83, 16);
             this.lblMessage.TabIndex = 4;
@@ -163,7 +121,7 @@
             // lblkani
             // 
             this.lblkani.AutoSize = true;
-            this.lblkani.Location = new System.Drawing.Point(337, 391);
+            this.lblkani.Location = new System.Drawing.Point(351, 449);
             this.lblkani.Name = "lblkani";
             this.lblkani.Size = new System.Drawing.Size(44, 16);
             this.lblkani.TabIndex = 5;
@@ -182,15 +140,15 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.Padding = new System.Drawing.Point(10, 20);
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1214, 496);
+            this.tabControl1.Size = new System.Drawing.Size(1214, 539);
             this.tabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl1.TabIndex = 6;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.cmbAA);
             this.tabPage1.Controls.Add(this.lblkann);
-            this.tabPage1.Controls.Add(this.DataGridView1);
             this.tabPage1.Controls.Add(this.lblkani);
             this.tabPage1.Controls.Add(this.btnSend);
             this.tabPage1.Controls.Add(this.lblMessage);
@@ -199,10 +157,74 @@
             this.tabPage1.Location = new System.Drawing.Point(59, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1151, 488);
+            this.tabPage1.Size = new System.Drawing.Size(1151, 531);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Finance";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
+            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.clientIDDataGridViewTextBoxColumn,
+            this.invoiceNumberDataGridViewTextBoxColumn,
+            this.clientNameDataGridViewTextBoxColumn,
+            this.transactionDateDataGridViewTextBoxColumn,
+            this.requirementsStatusDataGridViewTextBoxColumn,
+            this.paymentStatusDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.clientsBindingSource;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView1.Location = new System.Drawing.Point(26, 45);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.RowTemplate.ReadOnly = true;
+            this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.Size = new System.Drawing.Size(1107, 150);
+            this.dataGridView1.TabIndex = 10;
+            // 
+            // cmbAA
+            // 
+            this.cmbAA.FormattingEnabled = true;
+            this.cmbAA.Location = new System.Drawing.Point(773, 494);
+            this.cmbAA.Name = "cmbAA";
+            this.cmbAA.Size = new System.Drawing.Size(254, 24);
+            this.cmbAA.TabIndex = 7;
+            // 
+            // lblkann
+            // 
+            this.lblkann.AutoSize = true;
+            this.lblkann.Location = new System.Drawing.Point(94, 471);
+            this.lblkann.Name = "lblkann";
+            this.lblkann.Size = new System.Drawing.Size(44, 16);
+            this.lblkann.TabIndex = 6;
+            this.lblkann.Text = "label2";
             // 
             // tabPage2
             // 
@@ -222,7 +244,7 @@
             this.tabPage2.Location = new System.Drawing.Point(59, 4);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1151, 488);
+            this.tabPage2.Size = new System.Drawing.Size(1151, 531);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Clients";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -394,7 +416,7 @@
             this.tabPage3.Location = new System.Drawing.Point(59, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1151, 488);
+            this.tabPage3.Size = new System.Drawing.Size(1151, 531);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "History";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -408,127 +430,94 @@
             this.lstHistory.Size = new System.Drawing.Size(1151, 484);
             this.lstHistory.TabIndex = 0;
             // 
-            // ClientID
+            // waayo69
             // 
-            this.ClientID.DataPropertyName = "ClientID";
-            this.ClientID.HeaderText = "ClientID";
-            this.ClientID.MinimumWidth = 6;
-            this.ClientID.Name = "ClientID";
-            this.ClientID.ReadOnly = true;
+            this.waayo69.DataSetName = "waayo69";
+            this.waayo69.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
-            // InvoiceNum
+            // waayo69BindingSource
             // 
-            this.InvoiceNum.DataPropertyName = "InvoiceNum";
-            this.InvoiceNum.HeaderText = "InvoiceNumber";
-            this.InvoiceNum.MinimumWidth = 6;
-            this.InvoiceNum.Name = "InvoiceNum";
-            this.InvoiceNum.ReadOnly = true;
-            // 
-            // ClientName
-            // 
-            this.ClientName.DataPropertyName = "ClientName";
-            this.ClientName.HeaderText = "ClientName";
-            this.ClientName.MinimumWidth = 6;
-            this.ClientName.Name = "ClientName";
-            // 
-            // TransactionDate
-            // 
-            this.TransactionDate.DataPropertyName = "TransactionDate";
-            this.TransactionDate.HeaderText = "TransactionDate";
-            this.TransactionDate.MinimumWidth = 6;
-            this.TransactionDate.Name = "TransactionDate";
-            // 
-            // QueuePosition
-            // 
-            this.QueuePosition.DataPropertyName = "QueuePosition";
-            this.QueuePosition.HeaderText = "QueuePosition";
-            this.QueuePosition.MinimumWidth = 6;
-            this.QueuePosition.Name = "QueuePosition";
-            // 
-            // RequirementsStatus
-            // 
-            this.RequirementsStatus.DataPropertyName = "RequirementsStatus";
-            this.RequirementsStatus.HeaderText = "RequirementsStatus";
-            this.RequirementsStatus.MinimumWidth = 6;
-            this.RequirementsStatus.Name = "RequirementsStatus";
-            // 
-            // PaymentStatus
-            // 
-            this.PaymentStatus.DataPropertyName = "PaymentStatus";
-            this.PaymentStatus.HeaderText = "PaymentStatus";
-            this.PaymentStatus.MinimumWidth = 6;
-            this.PaymentStatus.Name = "PaymentStatus";
-            // 
-            // ID
-            // 
-            this.ID.DataPropertyName = "ID";
-            this.ID.HeaderText = "ID";
-            this.ID.MinimumWidth = 6;
-            this.ID.Name = "ID";
-            // 
-            // dbqueueDataSet1
-            // 
-            this.dbqueueDataSet1.DataSetName = "dbqueueDataSet1";
-            this.dbqueueDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.waayo69BindingSource.DataSource = this.waayo69;
+            this.waayo69BindingSource.Position = 0;
             // 
             // clientsBindingSource
             // 
             this.clientsBindingSource.DataMember = "Clients";
-            this.clientsBindingSource.DataSource = this.dbqueueDataSet1;
+            this.clientsBindingSource.DataSource = this.waayo69BindingSource;
             // 
             // clientsTableAdapter
             // 
             this.clientsTableAdapter.ClearBeforeFill = true;
             // 
-            // lblkann
+            // clientIDDataGridViewTextBoxColumn
             // 
-            this.lblkann.AutoSize = true;
-            this.lblkann.Location = new System.Drawing.Point(197, 439);
-            this.lblkann.Name = "lblkann";
-            this.lblkann.Size = new System.Drawing.Size(44, 16);
-            this.lblkann.TabIndex = 6;
-            this.lblkann.Text = "label2";
+            this.clientIDDataGridViewTextBoxColumn.DataPropertyName = "ClientID";
+            this.clientIDDataGridViewTextBoxColumn.HeaderText = "ClientID";
+            this.clientIDDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.clientIDDataGridViewTextBoxColumn.Name = "clientIDDataGridViewTextBoxColumn";
+            this.clientIDDataGridViewTextBoxColumn.ReadOnly = true;
             // 
-            // cmbAA
+            // invoiceNumberDataGridViewTextBoxColumn
             // 
-            this.cmbAA.FormattingEnabled = true;
-            this.cmbAA.Location = new System.Drawing.Point(445, 431);
-            this.cmbAA.Name = "cmbAA";
-            this.cmbAA.Size = new System.Drawing.Size(254, 24);
-            this.cmbAA.TabIndex = 7;
+            this.invoiceNumberDataGridViewTextBoxColumn.DataPropertyName = "InvoiceNumber";
+            this.invoiceNumberDataGridViewTextBoxColumn.HeaderText = "InvoiceNumber";
+            this.invoiceNumberDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.invoiceNumberDataGridViewTextBoxColumn.Name = "invoiceNumberDataGridViewTextBoxColumn";
+            // 
+            // clientNameDataGridViewTextBoxColumn
+            // 
+            this.clientNameDataGridViewTextBoxColumn.DataPropertyName = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.HeaderText = "ClientName";
+            this.clientNameDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.clientNameDataGridViewTextBoxColumn.Name = "clientNameDataGridViewTextBoxColumn";
+            // 
+            // transactionDateDataGridViewTextBoxColumn
+            // 
+            this.transactionDateDataGridViewTextBoxColumn.DataPropertyName = "TransactionDate";
+            this.transactionDateDataGridViewTextBoxColumn.HeaderText = "TransactionDate";
+            this.transactionDateDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.transactionDateDataGridViewTextBoxColumn.Name = "transactionDateDataGridViewTextBoxColumn";
+            // 
+            // requirementsStatusDataGridViewTextBoxColumn
+            // 
+            this.requirementsStatusDataGridViewTextBoxColumn.DataPropertyName = "RequirementsStatus";
+            this.requirementsStatusDataGridViewTextBoxColumn.HeaderText = "RequirementsStatus";
+            this.requirementsStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.requirementsStatusDataGridViewTextBoxColumn.Name = "requirementsStatusDataGridViewTextBoxColumn";
+            // 
+            // paymentStatusDataGridViewTextBoxColumn
+            // 
+            this.paymentStatusDataGridViewTextBoxColumn.DataPropertyName = "PaymentStatus";
+            this.paymentStatusDataGridViewTextBoxColumn.HeaderText = "PaymentStatus";
+            this.paymentStatusDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.paymentStatusDataGridViewTextBoxColumn.Name = "paymentStatusDataGridViewTextBoxColumn";
             // 
             // Monitor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1214, 496);
+            this.ClientSize = new System.Drawing.Size(1214, 539);
             this.Controls.Add(this.tabControl1);
             this.Name = "Monitor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Monitor";
             this.Load += new System.EventHandler(this.Monitor_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.DataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet3)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dbqueueDataSet1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.waayo69BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.clientsBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView DataGridView1;
         private System.Windows.Forms.Button btnSend;
-        private dbqueueDataSet3 dbqueueDataSet3;
-        private System.Windows.Forms.BindingSource clientsBindingSource1;
-        private dbqueueDataSet3TableAdapters.ClientsTableAdapter clientsTableAdapter1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblTimer;
         private System.Windows.Forms.Label lblMessage;
@@ -551,18 +540,18 @@
         private System.Windows.Forms.CheckedListBox checkedListBox1;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ListBox lstHistory;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClientID;
-        private System.Windows.Forms.DataGridViewTextBoxColumn InvoiceNum;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ClientName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn TransactionDate;
-        private System.Windows.Forms.DataGridViewTextBoxColumn QueuePosition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn RequirementsStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn PaymentStatus;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ID;
-        private dbqueueDataSet1 dbqueueDataSet1;
-        private System.Windows.Forms.BindingSource clientsBindingSource;
-        private dbqueueDataSet1TableAdapters.ClientsTableAdapter clientsTableAdapter;
         private System.Windows.Forms.Label lblkann;
         private System.Windows.Forms.ComboBox cmbAA;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.BindingSource waayo69BindingSource;
+        private waayo69 waayo69;
+        private System.Windows.Forms.BindingSource clientsBindingSource;
+        private waayo69TableAdapters.ClientsTableAdapter clientsTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clientIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn invoiceNumberDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn clientNameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn transactionDateDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn requirementsStatusDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn paymentStatusDataGridViewTextBoxColumn;
     }
 }

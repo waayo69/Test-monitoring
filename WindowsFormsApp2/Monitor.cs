@@ -41,8 +41,8 @@ namespace WindowsFormsApp2
 
         private void Monitor_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'dbqueueDataSet1.Clients' table. You can move, or remove it, as needed.
-            this.clientsTableAdapter.Fill(this.dbqueueDataSet1.Clients);
+            // TODO: This line of code loads data into the 'waayo69.Clients' table. You can move, or remove it, as needed.
+            this.clientsTableAdapter.Fill(this.waayo69.Clients);
             ShowSTMOnSecondMonitor();
             //ShowForm1();
         }
@@ -106,7 +106,7 @@ namespace WindowsFormsApp2
                 });
 
                 // Define the range of data to fetch
-                var range = $"{SheetName}!A2:H1000"; // Adjust range as per your data
+                var range = $"{SheetName}!A2:G1000"; // Adjust range as per your data
                 var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
                 // Execute the request and fetch data
@@ -119,8 +119,9 @@ namespace WindowsFormsApp2
                     fetchedRows.Clear(); // Clear previous rows
                     foreach (var row in values)
                     {
-                        UpdateDatabase(row);    
-                        this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+                        UpdateDatabase(row);
+                        this.clientsTableAdapter.Fill(this.waayo69.Clients);
+                        //this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
                         
                     }
                     lblMessage.Text = $"Data synchronized successfully from Google Sheets!";
@@ -144,15 +145,15 @@ namespace WindowsFormsApp2
             try
             {
                 // Establish a connection to the SQL Server database
-                using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
+                using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
                 {
                     connection.Open();
 
                     // Check if the record exists
-                    var query = "SELECT COUNT(*) FROM Clients WHERE ID=@ID";
+                    var query = "SELECT COUNT(*) FROM Clients WHERE ClientID=@ClientID";
                     using (var checkCmd = new SqlCommand(query, connection))
                     {
-                        checkCmd.Parameters.AddWithValue("ID", row[7]); // Assuming ClientID is in column A
+                        checkCmd.Parameters.AddWithValue("ClientID", row[0]); // Assuming ClientID is in column A
                         int count = (int)checkCmd.ExecuteScalar();
 
                         if (count > 0)
@@ -162,23 +163,26 @@ namespace WindowsFormsApp2
                         }
                         else
                         {
+
                             // Insert new record
                             query = @"
-                        INSERT INTO Clients (ClientID, InvoiceNum, ClientName, TransactionDate, QueuePosition, RequirementsStatus, PaymentStatus, ID)
-                        VALUES (@ClientID,  @InvoiceNum, @ClientName, @TransactionDate, @QueuePosition, @RequirementsStatus, @PaymentStatus,@InvoiceNum,@ID)";
+                IF NOT EXISTS (SELECT 1 FROM Clients WHERE InvoiceNumber = @InvoiceNumber)
+                BEGIN
+                    INSERT INTO Clients (InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus)
+                    VALUES (@InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)
+                END";
+
 
                             using (var insertCmd = new SqlCommand(query, connection))
                             {
-                                insertCmd.Parameters.AddWithValue("@ClientID", row[0]); // Assuming ID is in column A
-                                insertCmd.Parameters.AddWithValue("@InvoiceNum", row[6]);
-                                insertCmd.Parameters.AddWithValue("@ClientName", row[1]);
-                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[2]));
-                                insertCmd.Parameters.AddWithValue("@QueuePosition", int.Parse(row[3].ToString()));
+                                insertCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]); // Assuming invNum is in column A
+                                insertCmd.Parameters.AddWithValue("@ClientName", row[2]);
+                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[3]));
                                 insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
                                 insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
                                 insertCmd.ExecuteNonQuery();
                                 // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
-                                this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+                                this.clientsTableAdapter.Fill(this.waayo69.Clients);
                             }
                         }
                     }
@@ -189,24 +193,81 @@ namespace WindowsFormsApp2
                 MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        
+
+
+        private void UpdateSTMDatabase(IList<object> row)
+        {
+            try
+            {
+                // Establish a connection to the SQL Server database
+                using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
+                {
+                    connection.Open();
+
+                    // Check if the record exists
+                    var query = "SELECT COUNT(*) FROM STMTable WHERE ClientID=@ClientID";
+                    using (var checkCmd = new SqlCommand(query, connection))
+                    {
+                        checkCmd.Parameters.AddWithValue("ClientID", row[0]); // Assuming ClientID is in column A
+                        int count = (int)checkCmd.ExecuteScalar();
+
+                        if (count > 0)
+                        {
+                            // Skip the existing record
+                            return;
+                        }
+                        else
+                        {
+
+                            // Insert new record
+                            query = @"
+                                    IF NOT EXISTS (SELECT 1 FROM Clients WHERE InvoiceNumber = @InvoiceNumber)
+                                    BEGIN
+                                        INSERT INTO Clients (InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus)
+                                        VALUES (@InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)
+                                    END";
+
+
+                            using (var insertCmd = new SqlCommand(query, connection))
+                            {
+                                insertCmd.Parameters.AddWithValue("@InvoiceNumber", row[1]); // Assuming invNum is in column A
+                                insertCmd.Parameters.AddWithValue("@ClientName", row[2]);
+                                insertCmd.Parameters.AddWithValue("@TransactionDate", Convert.ToDateTime(row[3]));
+                                insertCmd.Parameters.AddWithValue("@RequirementsStatus", row[4]);
+                                insertCmd.Parameters.AddWithValue("@PaymentStatus", row[5]);
+                                insertCmd.ExecuteNonQuery();
+                                // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
+                                this.clientsTableAdapter.Fill(this.waayo69.Clients);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
         private void btnSend_Click(object sender, EventArgs e)
         {
             try
             {
                 // Ensure a row is selected
-                if (DataGridView1.SelectedRows.Count > 0)
+                if (dataGridView1.SelectedRows.Count > 0)
                 {
                     // Access the first selected row
-                    DataGridViewRow selectedRow = DataGridView1.SelectedRows[0];
+                    DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
 
                     // Retrieve data from the selected row
-                    int clientID = Convert.ToInt32 (selectedRow.Cells["ClientID"].Value);
-                    string invoiceNum = selectedRow.Cells["InvoiceNum"].Value.ToString();
-                    string clientName = selectedRow.Cells["ClientName"].Value.ToString();
-                    string transactionDate = selectedRow.Cells["TransactionDate"].Value.ToString();
-                    string requirementsStatus = selectedRow.Cells["RequirementsStatus"].Value.ToString();
-                    string paymentStatus = selectedRow.Cells["PaymentStatus"].Value.ToString();
+                    int clientID = Convert.ToInt32 (selectedRow.Cells["clientIDDataGridViewTextBoxColumn"].Value);
+                    string invoiceNum = selectedRow.Cells["invoiceNumberDataGridViewTextBoxColumn"].Value.ToString();
+                    string clientName = selectedRow.Cells["clientNameDataGridViewTextBoxColumn"].Value.ToString();
+                    string transactionDate = selectedRow.Cells["transactionDateDataGridViewTextBoxColumn"].Value.ToString();
+                    string requirementsStatus = selectedRow.Cells["requirementsStatusDataGridViewTextBoxColumn"].Value.ToString();
+                    string paymentStatus = selectedRow.Cells["paymentStatusDataGridViewTextBoxColumn"].Value.ToString();
 
                     if (paymentStatus == "Unpaid")
                     {
@@ -231,6 +292,26 @@ namespace WindowsFormsApp2
 
                             };
                             timer.Start();
+                            // Check if the record exists in the database
+                            using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
+                            {
+                                connection.Open();
+                                var query = "SELECT COUNT(*) FROM STMTable WHERE ClientID = @ClientID";
+                                using (var command = new SqlCommand(query, connection))
+                                {
+                                    command.Parameters.AddWithValue("@ClientID", clientID);
+
+                                    int recordCount = (int)command.ExecuteScalar();
+                                    if (recordCount > 0)
+                                    {
+                                        MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        return; // Stop further processing
+                                    }
+                                }
+                            }
+                            // Add the selected row's dqqata to the STM form
+                            dbSTM.STM_db(clientID, invoiceNum, clientName, Convert.ToDateTime(transactionDate), requirementsStatus, paymentStatus);
+
                         }
                         else
                         {
@@ -238,33 +319,6 @@ namespace WindowsFormsApp2
                         }
                         cmbClients.Items.Add(clientName);
                     }
-
-                    // Check if the record exists in the database
-                    using (var connection = new SqlConnection("Data Source=DESKTOP-TD8UC8F;Initial Catalog=dbqueue;Integrated Security=True;Encrypt=False"))
-                    {
-                        connection.Open();
-                        var query = "SELECT COUNT(*) FROM STM WHERE ClientID = @ClientID";
-                        using (var command = new SqlCommand(query, connection))
-                        {
-                            command.Parameters.AddWithValue("@ClientID", clientID);
-
-                            int recordCount = (int)command.ExecuteScalar();
-                            if (recordCount > 0)
-                            {
-                                MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return; // Stop further processing
-                            }
-                        }
-                    }
-
-                    dbSTM.STM_db(clientID, invoiceNum, clientName, Convert.ToDateTime(transactionDate) ,requirementsStatus, paymentStatus);
-
-
-                    
-                    // Add the selected row's dqqata to the STM form
-                    
-
-
                     
                     // Update the percentage dynamically
 
@@ -329,7 +383,7 @@ namespace WindowsFormsApp2
         {
             
             FetchAndSyncGoogleSheetsData();
-            this.clientsTableAdapter1.Fill(this.dbqueueDataSet3.Clients);
+            this.clientsTableAdapter.Fill(this.waayo69.Clients);
         }
         private void lblTimer_Click(object sender, EventArgs e)
         {
@@ -492,5 +546,9 @@ namespace WindowsFormsApp2
             
         }
 
+        private void clientsBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

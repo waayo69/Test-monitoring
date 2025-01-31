@@ -23,8 +23,6 @@ namespace WindowsFormsApp2
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'bastaKani.Basta' table. You can move, or remove it, as needed.
-            this.bastaTableAdapter.Fill(this.bastaKani.Basta);
             UpdatePercentage();
         }
 
@@ -335,8 +333,6 @@ namespace WindowsFormsApp2
                                 insertCmd.Parameters.AddWithValue("@Processed", 1);
                                 insertCmd.Parameters.AddWithValue("@ClientName", row[2]);
                                 insertCmd.ExecuteNonQuery();
-                                // TODO: This line of code loads data into the 'dbqueueDataSet3.Clients' table. You can move, or remove it, as needed.
-                                this.bastaTableAdapter.Fill(this.bastaKani.Basta);
                             }
                         }
                     }
