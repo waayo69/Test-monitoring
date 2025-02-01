@@ -2,6 +2,7 @@
 using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
+using System.Security.Cryptography;
 using Google.Apis.Util.Store;
 using System;
 using System.Collections;
@@ -216,29 +217,7 @@ namespace WindowsFormsApp2
                         return;
                     }
 
-                    // Minimize and restore STM Form (if open)
-                    if (stmForm != null && !stmForm.IsDisposed)
-                    {
-                        stmForm.WindowState = FormWindowState.Minimized;
-                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
-                        {
-                            Interval = 10 // Short delay before restoring
-                        };
-
-                        // Add data to STM Form
-                        stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
-                        timer.Tick += (s, args) =>
-                        {
-                            timer.Stop();
-                            stmForm.WindowState = FormWindowState.Maximized;
-                        };
-                        timer.Start();
-                    }
-                    else
-                    {
-                        MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    
 
                     // Database Connection & Insert Logic
                     using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
@@ -255,11 +234,12 @@ namespace WindowsFormsApp2
                             int recordCount = (int)checkCommand.ExecuteScalar();
                             if (recordCount > 0)
                             {
-                                MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                                lblkani.Text = "This record already exists in the database.";
+                                //MessageBox.Show("This record already exists in the database.", "Duplicate Record", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 return; // Stop further processing
                             }
                         }
-
                         // Insert Data into STMTable
                         string insertQuery = @"
                                             INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
@@ -276,12 +256,39 @@ namespace WindowsFormsApp2
 
                             insertCommand.ExecuteNonQuery();
                         }
+                        lblkani.Text = "Record successfully added to the database!";
+                        //MessageBox.Show("Record successfully added to the database!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
 
-                        MessageBox.Show("Record successfully added to the database!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+
+                    // Minimize and restore STM Form (if open)
+                    if (stmForm != null && !stmForm.IsDisposed)
+                    {
+                        stmForm.WindowState = FormWindowState.Minimized;
+                        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+                        {
+                            Interval = 1 // Short delay before restoring
+                        };
+                        string field = "Planning";
+                        // Add data to STM Form
+                        stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus, field);
+                        timer.Tick += (s, args) =>
+                        {
+                            timer.Stop();
+                            stmForm.WindowState = FormWindowState.Maximized;
+                        };
+                        timer.Start();
+                    }
+                    else
+                    {
+                        MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
                     }
 
                     // Update ComboBox with Client Name
                     cmbClients.Items.Add(clientName);
+
                 }
                 else
                 {
@@ -334,10 +341,6 @@ namespace WindowsFormsApp2
             FetchAndSyncGoogleSheetsData();
             this.clientsTableAdapter.Fill(this.waayo69.Clients);
         }
-        private void lblTimer_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void cmbClients_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -346,22 +349,22 @@ namespace WindowsFormsApp2
             if (string.IsNullOrEmpty(selectedClient)) return;
 
             // Load unprocessed items into checkedListBox1
-            checkedListBox1.Items.Clear();
+            chklstboxUnProcessed.Items.Clear();
             if (clientAssociations.ContainsKey(selectedClient))
             {
                 foreach (var item in clientAssociations[selectedClient])
                 {
-                    checkedListBox1.Items.Add(item);
+                    chklstboxUnProcessed.Items.Add(item);
                 }
             }
 
             // Load processed items into checkedListBox2
-            checkedListBox2.Items.Clear();
+            chklstboxProcessed.Items.Clear();
             if (processedItems.ContainsKey(selectedClient))
             {
                 foreach (var item in processedItems[selectedClient])
                 {
-                    checkedListBox2.Items.Add(item);
+                    chklstboxProcessed.Items.Add(item);
                 }
             }
         }
@@ -397,7 +400,7 @@ namespace WindowsFormsApp2
 
             // Add the item to the client's list of unprocessed items
             clientAssociations[selectedClient].Add(newItem);
-            checkedListBox1.Items.Add(newItem);
+            chklstboxUnProcessed.Items.Add(newItem);
 
             // Update the percentage dynamically
             UpdateProcessedPercentage();
@@ -433,21 +436,21 @@ namespace WindowsFormsApp2
             }
 
             // Transfer checked items to processed items
-            foreach (var item in checkedListBox1.CheckedItems)
+            foreach (var item in chklstboxUnProcessed.CheckedItems)
             {
                 string itemStr = item.ToString();
                 if (!processedItems[selectedClient].Contains(itemStr))
                 {
-                    checkedListBox2.Items.Add(itemStr);
+                    chklstboxProcessed.Items.Add(itemStr);
                     processedItems[selectedClient].Add(itemStr); // Add to processed items
                 }
             }
                 
             // Remove processed items from checkedListBox1 and clientAssociations
-            for (int i = checkedListBox1.CheckedItems.Count - 1; i >= 0; i--)
+            for (int i = chklstboxUnProcessed.CheckedItems.Count - 1; i >= 0; i--)
             {
-                string itemToRemove = checkedListBox1.CheckedItems[i].ToString();
-                checkedListBox1.Items.Remove(itemToRemove);
+                string itemToRemove = chklstboxUnProcessed.CheckedItems[i].ToString();
+                chklstboxUnProcessed.Items.Remove(itemToRemove);
                 clientAssociations[selectedClient].Remove(itemToRemove);
             }
 
@@ -467,9 +470,9 @@ namespace WindowsFormsApp2
         {
             if (radioButtonSelectAll.Checked)
             {
-                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                for (int i = 0; i < chklstboxUnProcessed.Items.Count; i++)
                 {
-                    checkedListBox1.SetItemChecked(i, true);
+                    chklstboxUnProcessed.SetItemChecked(i, true);
                 }
             }
         }
@@ -478,21 +481,97 @@ namespace WindowsFormsApp2
         {
             if (radioButtonDeselect.Checked)
             {
-                for (int i = 0; i < checkedListBox1.Items.Count; i++)
+                for (int i = 0; i < chklstboxUnProcessed.Items.Count; i++)
                 {
-                    checkedListBox1.SetItemChecked(i, false);
+                    chklstboxUnProcessed.SetItemChecked(i, false);
                 }
             }
         }
 
-        private void lblPercent_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            string selectedClient = cmbClients.SelectedItem?.ToString();
+            if (string.IsNullOrEmpty(selectedClient))
+            {
+                MessageBox.Show("Please select a client before processing.", "No Client Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (stmForm != null && !stmForm.IsDisposed)
+            {
+                // Update the field in STM Form
+                stmForm.newField(selectedClient, "Liaison");
+
+                // Minimize and restore STM Form
+                stmForm.WindowState = FormWindowState.Minimized;
+                System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer
+                {
+                    Interval = 1 // Short delay before restoring
+                };
+                timer.Tick += (s, args) =>
+                {
+                    timer.Stop();
+                    stmForm.WindowState = FormWindowState.Maximized;
+                };
+                timer.Start();
+            }
+            else
+            {
+                MessageBox.Show("STM form is not available.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            MessageBox.Show("Field updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                    saveFileDialog.Title = "Save CSV File";
+                    saveFileDialog.FileName = "ClientData.csv";
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName))
+                        {
+                            // Write the header row
+                            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                            {
+                                writer.Write(dataGridView1.Columns[i].HeaderText);
+                                if (i < dataGridView1.Columns.Count - 1)
+                                {
+                                    writer.Write(",");
+                                }
+                            }
+                            writer.WriteLine();
+
+                            // Write the data rows
+                            for (int row = 0; row < dataGridView1.Rows.Count; row++)
+                            {
+                                for (int col = 0; col < dataGridView1.Columns.Count; col++)
+                                {
+                                    writer.Write($"\"{dataGridView1.Rows[row].Cells[col].Value}\"");
+                                    if (col < dataGridView1.Columns.Count - 1)
+                                    {
+                                        writer.Write(",");
+                                    }
+                                }
+                                writer.WriteLine();
+                            }
+                        }
+
+                        MessageBox.Show("Data exported successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error exporting data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnSend = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.lblTimer = new System.Windows.Forms.Label();
@@ -58,16 +58,17 @@
             this.lblPercent = new System.Windows.Forms.Label();
             this.btnProcessed = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkedListBox2 = new System.Windows.Forms.CheckedListBox();
+            this.chklstboxProcessed = new System.Windows.Forms.CheckedListBox();
             this.btnDone = new System.Windows.Forms.Button();
             this.radioButtonDeselect = new System.Windows.Forms.RadioButton();
             this.radioButtonSelectAll = new System.Windows.Forms.RadioButton();
             this.lblSelectedValue = new System.Windows.Forms.Label();
             this.comboBoxItems = new System.Windows.Forms.ComboBox();
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.chklstboxUnProcessed = new System.Windows.Forms.CheckedListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.lstHistory = new System.Windows.Forms.ListBox();
             this.clientsTableAdapter = new WindowsFormsApp2.waayo69TableAdapters.ClientsTableAdapter();
+            this.btnExport = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -111,7 +112,7 @@
             // lblMessage
             // 
             this.lblMessage.AutoSize = true;
-            this.lblMessage.Location = new System.Drawing.Point(376, 274);
+            this.lblMessage.Location = new System.Drawing.Point(367, 256);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(83, 16);
             this.lblMessage.TabIndex = 4;
@@ -120,7 +121,7 @@
             // lblkani
             // 
             this.lblkani.AutoSize = true;
-            this.lblkani.Location = new System.Drawing.Point(376, 305);
+            this.lblkani.Location = new System.Drawing.Point(367, 302);
             this.lblkani.Name = "lblkani";
             this.lblkani.Size = new System.Drawing.Size(44, 16);
             this.lblkani.TabIndex = 5;
@@ -146,6 +147,7 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPage1.Controls.Add(this.btnExport);
             this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.cmbAA);
             this.tabPage1.Controls.Add(this.lblkann);
@@ -168,21 +170,21 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Sunken;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.clientIDDataGridViewTextBoxColumn,
@@ -192,14 +194,14 @@
             this.requirementsStatusDataGridViewTextBoxColumn,
             this.paymentStatusDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.clientsBindingSource;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
             this.dataGridView1.Location = new System.Drawing.Point(-2, -2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
@@ -293,13 +295,13 @@
             this.tabPage2.Controls.Add(this.lblPercent);
             this.tabPage2.Controls.Add(this.btnProcessed);
             this.tabPage2.Controls.Add(this.label1);
-            this.tabPage2.Controls.Add(this.checkedListBox2);
+            this.tabPage2.Controls.Add(this.chklstboxProcessed);
             this.tabPage2.Controls.Add(this.btnDone);
             this.tabPage2.Controls.Add(this.radioButtonDeselect);
             this.tabPage2.Controls.Add(this.radioButtonSelectAll);
             this.tabPage2.Controls.Add(this.lblSelectedValue);
             this.tabPage2.Controls.Add(this.comboBoxItems);
-            this.tabPage2.Controls.Add(this.checkedListBox1);
+            this.tabPage2.Controls.Add(this.chklstboxUnProcessed);
             this.tabPage2.Location = new System.Drawing.Point(4, 62);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
@@ -365,15 +367,15 @@
             this.label1.TabIndex = 25;
             this.label1.Text = "Completed";
             // 
-            // checkedListBox2
+            // chklstboxProcessed
             // 
-            this.checkedListBox2.CheckOnClick = true;
-            this.checkedListBox2.FormattingEnabled = true;
-            this.checkedListBox2.Location = new System.Drawing.Point(470, 137);
-            this.checkedListBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.checkedListBox2.Name = "checkedListBox2";
-            this.checkedListBox2.Size = new System.Drawing.Size(423, 123);
-            this.checkedListBox2.TabIndex = 24;
+            this.chklstboxProcessed.CheckOnClick = true;
+            this.chklstboxProcessed.FormattingEnabled = true;
+            this.chklstboxProcessed.Location = new System.Drawing.Point(470, 137);
+            this.chklstboxProcessed.Margin = new System.Windows.Forms.Padding(4);
+            this.chklstboxProcessed.Name = "chklstboxProcessed";
+            this.chklstboxProcessed.Size = new System.Drawing.Size(423, 123);
+            this.chklstboxProcessed.TabIndex = 24;
             // 
             // btnDone
             // 
@@ -458,15 +460,15 @@
             this.comboBoxItems.Sorted = true;
             this.comboBoxItems.TabIndex = 17;
             // 
-            // checkedListBox1
+            // chklstboxUnProcessed
             // 
-            this.checkedListBox1.CheckOnClick = true;
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(30, 136);
-            this.checkedListBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(423, 174);
-            this.checkedListBox1.TabIndex = 16;
+            this.chklstboxUnProcessed.CheckOnClick = true;
+            this.chklstboxUnProcessed.FormattingEnabled = true;
+            this.chklstboxUnProcessed.Location = new System.Drawing.Point(30, 136);
+            this.chklstboxUnProcessed.Margin = new System.Windows.Forms.Padding(4);
+            this.chklstboxUnProcessed.Name = "chklstboxUnProcessed";
+            this.chklstboxUnProcessed.Size = new System.Drawing.Size(423, 174);
+            this.chklstboxUnProcessed.TabIndex = 16;
             // 
             // tabPage3
             // 
@@ -493,6 +495,17 @@
             // clientsTableAdapter
             // 
             this.clientsTableAdapter.ClearBeforeFill = true;
+            // 
+            // btnExport
+            // 
+            this.btnExport.AutoSize = true;
+            this.btnExport.Location = new System.Drawing.Point(1044, 256);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(122, 52);
+            this.btnExport.TabIndex = 11;
+            this.btnExport.Text = "Export to CSV";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // Monitor
             // 
@@ -533,13 +546,13 @@
         private System.Windows.Forms.Label lblPercent;
         private System.Windows.Forms.Button btnProcessed;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckedListBox checkedListBox2;
+        private System.Windows.Forms.CheckedListBox chklstboxProcessed;
         private System.Windows.Forms.Button btnDone;
         private System.Windows.Forms.RadioButton radioButtonDeselect;
         private System.Windows.Forms.RadioButton radioButtonSelectAll;
         private System.Windows.Forms.Label lblSelectedValue;
         private System.Windows.Forms.ComboBox comboBoxItems;
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox chklstboxUnProcessed;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.ListBox lstHistory;
         private System.Windows.Forms.Label lblkann;
@@ -555,5 +568,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn transactionDateDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn requirementsStatusDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn paymentStatusDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button btnExport;
     }
 }
