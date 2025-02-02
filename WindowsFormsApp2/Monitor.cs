@@ -22,7 +22,7 @@ namespace WindowsFormsApp2
     {
         private static readonly string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         private static readonly string ApplicationName = "Google Sheets Integration";
-        private static readonly string SpreadsheetId = "1dCshOpmc9WO-WQR6XV264NgWiOkJR42ZSRYoBocj7sw"; // Replace with your Google Sheets ID
+        private static readonly string SpreadsheetId = "1KcxnijTnyoCnTPGa8J1rSdEOip7v23P86Hooyuun0eQ"; // Replace with your Google Sheets ID
         private static readonly string SheetName = "Clients"; // Sheet name should match your database table
         private STM1 stmForm; // Class-level reference to the STM form
         System.Windows.Forms.Timer timer2 = new System.Windows.Forms.Timer();
@@ -36,9 +36,29 @@ namespace WindowsFormsApp2
         {
             InitializeComponent();
             FetchAndSyncGoogleSheetsData();
+            LoadEmployeeSpecificOrders();
         }
 
-
+        private void LoadEmployeeSpecificOrders()
+        {
+            cmbClients.Items.Clear();
+            using (var connection = new SqlConnection(@"Data Source=sql.bsite.net\MSSQL2016;Initial Catalog=waayo69_Clients;User ID=waayo69_Clients;Password=kris123asd;Encrypt=False; Connection Timeout=30;"))
+            {
+                connection.Open();
+                string query = "SELECT DISTINCT ClientName FROM STMTable WHERE Id = @Id";
+                using (var cmd = new SqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@Id", Login.LoggedInEmployeeID);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            cmbClients.Items.Add(reader["ClientName"].ToString());
+                        }
+                    }
+                }
+            }
+        }
         private void Monitor_Load(object sender, EventArgs e)
         {
             // TODO: This line of code loads data into the 'waayo69.Clients' table. You can move, or remove it, as needed.
@@ -101,7 +121,7 @@ namespace WindowsFormsApp2
                 });
 
                 // Define the range of data to fetch
-                var range = $"{SheetName}!A2:G1000"; // Adjust range as per your data
+                var range = $"{SheetName}!A2:F"; // Adjust range as per your data
                 var request = service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
                 // Execute the request and fetch data
@@ -227,7 +247,7 @@ namespace WindowsFormsApp2
 
                         // Add data to STM Form
                         stmForm.AddRowToTable(clientID, invoiceNum, clientName, transactionDate, requirementsStatus, paymentStatus);
-                        timer.Tick += (s, args) =>
+                        timer.Tick += (s, args) => 
                         {
                             timer.Stop();
                             stmForm.WindowState = FormWindowState.Maximized;
@@ -260,10 +280,17 @@ namespace WindowsFormsApp2
                             }
                         }
 
-                        // Insert Data into STMTable
+                        //// Insert Data into STMTable
+                        //string insertQuery = @"
+                        //                    INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
+                        //                    VALUES (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)";
+
+                        // Inside btnSend_Click, update the INSERT query:
                         string insertQuery = @"
-                                            INSERT INTO STMTable (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus) 
-                                            VALUES (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus)";
+    INSERT INTO STMTable 
+        (ClientID, InvoiceNumber, ClientName, TransactionDate, RequirementsStatus, PaymentStatus, Id) 
+    VALUES 
+        (@ClientID, @InvoiceNumber, @ClientName, @TransactionDate, @RequirementsStatus, @PaymentStatus, @Id)";
 
                         using (var insertCommand = new SqlCommand(insertQuery, connection))
                         {
@@ -273,6 +300,7 @@ namespace WindowsFormsApp2
                             insertCommand.Parameters.AddWithValue("@TransactionDate", string.IsNullOrEmpty(transactionDate) ? (object)DBNull.Value : DateTime.Parse(transactionDate));
                             insertCommand.Parameters.AddWithValue("@RequirementsStatus", requirementsStatus);
                             insertCommand.Parameters.AddWithValue("@PaymentStatus", paymentStatus);
+                            insertCommand.Parameters.AddWithValue("@Id", Login.LoggedInEmployeeID);
 
                             insertCommand.ExecuteNonQuery();
                         }
@@ -281,7 +309,7 @@ namespace WindowsFormsApp2
                     }
 
                     // Update ComboBox with Client Name
-                    cmbClients.Items.Add(clientName);
+                    //cmbClients.Items.Add(clientName);
                 }
                 else
                 {
